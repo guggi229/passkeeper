@@ -45,12 +45,15 @@ public class LoginBean implements Serializable {
 		// Sollte nicht notwendig sein. 
 //		}
 		//Query query = em.createNativeQuery("Select userid from user u WHERE useremail='" + user.getUserEmail()+ "' AND userpassword='"+user.getUserPassword()+"'");
-		Query query = em.createNativeQuery("Select count(*) from user u WHERE u.useremail='" + user.getUserEmail()+ "'");
-		BigInteger result =  (BigInteger) query.getSingleResult();
-		System.out.println( "Count: " +result);
+		// Query query = em.createNativeQuery("Select count(*) from user u WHERE u.useremail='" + user.getUserEmail()+ "'");
+		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + user.getUserEmail()+ "'");
+		Integer result =  (Integer) query.getSingleResult();
+		System.out.println( "ID: " +result);
 		if (result.intValue()>0){
-//			System.out.println("Eingeloggt mit ID: " + result);
-//			user = em.find(User.class, result);
+			System.out.println("Eingeloggt mit ID: " + result);
+			user = em.find(User.class, result.longValue());
+			System.out.println("User " +user.getUserName() + " hat eingeloggt");
+			loggedIn=true;
 			return "/secured/welcome";
 		}else{
 			System.out.println("Nicht eingeloggt");
