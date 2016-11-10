@@ -2,19 +2,25 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import ch.bfh.guggisberg.stefan.model.Password;
 import ch.bfh.guggisberg.stefan.model.Test;
 import ch.bfh.guggisberg.stefan.model.User;
 @Named
-@RequestScoped
+@RequestScoped 
 public class IndexActionBean implements Serializable {
 
 	/**
@@ -24,7 +30,7 @@ public class IndexActionBean implements Serializable {
 	private boolean isAdded = false;
 	@Inject
 	private Test t;
-	private User user;
+	private User user = new User();
 	private Password password;
 
 	
@@ -52,8 +58,49 @@ public class IndexActionBean implements Serializable {
 	}
 	
 	
-	// Sprache
+	// addUser
 	
+	public String addUser() {
+		try {
+			ut.begin();
+		} catch (NotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.persist(user);
+		try {
+			ut.commit();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HeuristicMixedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HeuristicRollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "thanks";
+	}
+	
+	public String thanks(){
+		return "thanks";
+	}
+	public String inputData(){
+		return "register";
+	}
 	
 	// Allgemeine Getter und Setter
 	public Test getT() {
@@ -85,7 +132,7 @@ public class IndexActionBean implements Serializable {
 
 
 	public User getUser() {
-		return em.find(User.class, 1L);
+		return user;
 	}
 
 

@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,11 +23,14 @@ import javax.persistence.Table;
 @Entity
 @RequestScoped
 @Table(name="user") //SessionScoped?
+@Named
+
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="userid")
 	private Long id;
 	
