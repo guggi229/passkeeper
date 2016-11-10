@@ -25,7 +25,7 @@
 			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
 		</ul>
 		<div class="jumbotron">
-			<p>Bitte loggen Sie sich ein.</p>
+			<p>"#{msg.loginpage}"</p>
 		</div>
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#"><h:outputText
@@ -44,18 +44,27 @@
 
 				<div class="form-group">
 					<h:outputLabel value="#{msg.email}" />
-					<h:inputText value="#{indexActionBean.user.userEmail}"
-						id="userEmail" required="true" requiredMessage="Bitte ausfüllen"
+					
+					<h:inputText value="#{loginBean.user.userEmail}" 
+						name="#{loginBean.user.userEmail}"
+						id="userEmail" required="true" 
+						requiredMessage="Bitte ausfüllen"
 						styleClass="form-control" />
-					<h:message for="userEmail" style="color:blue" />
+					<h:message for="userEmail" style="color:red" />
 				</div>
+				
 				<div class="form-group">
 					<label>Ihr Masterpassword</label>
-					<h:inputSecret value="#{indexActionBean.user.userPassword}"
-						required="true" styleClass="form-control" />
+					
+					<h:inputText value="#{loginBean.user.userPassword}" 
+					name="#{loginBean.user.userPassword}"
+					id="userPassword" required="true" 
+					requiredMessage="Bitte ausfüllen"
+					styleClass="form-control" />
 				</div>
+				<h:message for="userPassword" style="color:red" />
 				<div>
-					<h:commandButton action="#{indexActionBean.login}"
+					<h:commandButton action="#{loginBean.checkLogin}" 
 						value="#{msg.login}" styleClass="btn btn-success" />
 					<h:commandButton action="index" value="#{msg.cancel}"
 						styleClass="btn btn-danger" />

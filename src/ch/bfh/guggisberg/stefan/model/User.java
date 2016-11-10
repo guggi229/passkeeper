@@ -11,6 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,32 +28,41 @@ import javax.persistence.Table;
 @RequestScoped
 @Table(name="user") //SessionScoped?
 @Named
-
+//@NamedQueries({
+//	@NamedQuery(
+//	name = "findStockByStockCode",
+//	query = "from User s where s.stockCode = :stockCode"
+//	)
+//})
+@NamedNativeQueries({ @NamedNativeQuery(name = User.QUERY_CHECK_PASSWORD, 
+query = "Select count(*) from user u WHERE useremail='123'" )})
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
-
+	public static final String QUERY_CHECK_PASSWORD="QUERY_CHECK_PASSWORD";
+	public static final String PARAM_USEREMAIL="PARAM_USEREMAIL";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="userid")
 	private Long id;
-	
+
 	@Column(name="username")
 	private String  userName;
-	
+
 	@Column(name="userpassword")
 	private String userPassword;
-	
+
 	@Column(name="useremail")
 	private String userEmail;
 
-	
+
 	//
-	
+
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="user")
 	private List <Password> passwords; 
-	
-	
+
+
 	// Gette Setter
 	public Long getId() {
 		return id;
@@ -90,6 +103,6 @@ public class User implements Serializable {
 	public void setPasswords(List<Password> passwords) {
 		this.passwords = passwords;
 	}
-	
+
 
 }
