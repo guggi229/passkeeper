@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @RequestScoped
-@Table(name="user")
+@Table(name="user") //SessionScoped?
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
