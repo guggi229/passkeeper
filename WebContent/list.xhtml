@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<f:loadBundle basename="messages" var="msg" />
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<meta name="viewport" content="width-device-width, initial-scale=1" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/bootstrap-theme.css" />
+	<link rel="stylesheet" href="css/superpass.css" />
+	<script src="scripts/jquery-3.1.1.min.js"></script>
+	<script src="scripts/bootstrap.js"></script>
+	<title><h:outputText value="#{msg.title}" /></title>
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="page-header">
+			<h1>Test</h1>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><h:outputText value="#{msg.de}" /></li>
+			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
+		</ul>
+		<div class="jumbotron">
+			<p>
+				<h:outputText value="#{msg.yourPasswords}" />
+			</p>
+		</div>
+		<div>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#"><h:outputText
+							value="#{msg.home}" /></a></li>
+				<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
+				<li><a href="#"><h:outputText value="#{msg.login}" /></a></li>
+
+			</ul>
+		</div>
+
+
+		<div>
+			<table class="table table-striped">
+				<thead class="success">
+					<tr>
+						<th><h:outputText value="#{msg.passwordDesc}" /></th>
+						<th><h:outputText value="#{msg.passwordLoginName}" /></th>
+						<th><h:outputText value="#{msg.passwordClear}" /></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<h:form>
+						<tr>
+							<th><h:inputText class="form-group" value="#{indexActionBean.password.application}" /></th>
+							<th><h:inputText class="form-group" value="#{indexActionBean.password.login}" /></th>
+							<th><h:inputText class="form-group" value="#{indexActionBean.password.password}" /></th>
+							<th></th>
+							<th></th>
+							<th><h:commandButton action="#{indexActionBean.handleButtonClicked}" image="image/add.png" alt="#{msg.add}"/></th>		
+						</tr>
+					</h:form>
+					<ui:repeat var="password" value="#{indexActionBean.user.passwords}">
+
+						<tr>
+							<th><h:inputText class="form-group" value="#{password.application}" /></th>
+							<th><h:inputText class="form-group" value="#{password.login}" /></th>
+							<th><h:inputText class="form-group"  value="#{password.password}" /></th>
+							<th><img src="image/edit.png" alt="#{msg.edit}" /></th>
+							<th><img src="image/del.png" alt="#{msg.del}" /></th>
+						</tr>
+					</ui:repeat>
+
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	<div>
+		<h:form>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{msg.email}" />
+				<h:inputText class="form-group" value="#{registerController.user.email}" />
+				<h:outputLabel value="#{msg.password}" />
+				<h:inputSecret value="#{registerController.user.name}" />
+				<h:commandButton action="#{registerController.persist}"
+					value="#{msg.register}" />
+				<h:commandButton action="#{indexActionBean.handleButtonClicked}" value="#{msg.cancel}" />
+			</h:panelGrid>
+		</h:form>
+	</div>
+
+</h:body>
+</html>

@@ -1,0 +1,18 @@
+.jumbotron{
+	background-color: #2E2D88;
+	color:white;
+}
+.well{
+	background-color: #5B5AA0;
+	color:white; 
+}
+/* borders for rabs */
+.tab-content {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	padding: 10px;
+}
+.nav-tabs {
+	margin-bottom: 0;
+	}

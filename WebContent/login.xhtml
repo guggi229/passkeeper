@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<f:loadBundle basename="messages" var="msg" />
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<meta name="viewport" content="width-device-width, initial-scale=1" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/bootstrap-theme.css" />
+	<link rel="stylesheet" href="css/superpass.css" />
+	<script src="scripts/jquery-3.1.1.min.js"></script>
+	<script src="scripts/bootstrap.js"></script>
+	<title><h:outputText value="#{msg.title}" /></title>
+
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="page-header">
+			<h1>Test</h1>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><h:outputText value="#{msg.de}" /></li>
+			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
+		</ul>
+		<div class="jumbotron">
+			<p>Bitte loggen Sie sich ein.</p>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#"><h:outputText
+						value="#{msg.home}" /></a></li>
+			<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
+			<li><a href="#"><h:outputText value="#{msg.login}" /></a></li>
+
+		</ul>
+<div>
+
+<!-- Feldlänge begrenze  -->
+		<h:form>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{msg.email}" />
+				<h:inputText value="#{registerController.user.email}" />
+				<h:outputLabel value="#{msg.password}" />
+				<h:inputSecret value="#{registerController.user.name}" />
+				<h:commandButton action="#{registerController.persist}"
+					value="#{msg.register}" />
+				<h:commandButton action="index" value="#{msg.cancel}" />
+			</h:panelGrid>
+		</h:form>
+</div>
+
+	</div>
+</h:body>
+</html>
