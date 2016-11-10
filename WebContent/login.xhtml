@@ -19,9 +19,7 @@
 </h:head>
 <h:body>
 	<div class="container">
-		<div class="page-header">
-			<h1>Test</h1>
-		</div>
+
 		<ul class="nav nav-tabs">
 			<li class="active"><h:outputText value="#{msg.de}" /></li>
 			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
@@ -33,24 +31,37 @@
 			<li class="active"><a href="#"><h:outputText
 						value="#{msg.home}" /></a></li>
 			<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
-			<li><a href="#"><h:outputText value="#{msg.login}" /></a></li>
+			<li><a href="login.xhtml"><h:outputText value="#{msg.login}" /></a></li>
+			<li><a href="register.xhtml"><h:outputText
+						value="#{msg.register}" /></a></li>
 
 		</ul>
-<div>
+		<div>
 
-<!-- Feldlänge begrenze  -->
-		<h:form>
-			<h:panelGrid columns="2">
-				<h:outputLabel value="#{msg.email}" />
-				<h:inputText value="#{registerController.user.email}" />
-				<h:outputLabel value="#{msg.password}" />
-				<h:inputSecret value="#{registerController.user.name}" />
-				<h:commandButton action="#{registerController.persist}"
-					value="#{msg.register}" />
-				<h:commandButton action="index" value="#{msg.cancel}" />
-			</h:panelGrid>
-		</h:form>
-</div>
+			<!-- Feldlänge begrenze  -->
+			<h:form>
+
+
+				<div class="form-group">
+					<h:outputLabel value="#{msg.email}" />
+					<h:inputText value="#{indexActionBean.user.userEmail}"
+						id="userEmail" required="true" requiredMessage="Bitte ausfüllen"
+						styleClass="form-control" />
+					<h:message for="userEmail" style="color:blue" />
+				</div>
+				<div class="form-group">
+					<label>Ihr Masterpassword</label>
+					<h:inputSecret value="#{indexActionBean.user.userPassword}"
+						required="true" styleClass="form-control" />
+				</div>
+				<div>
+					<h:commandButton action="#{indexActionBean.login}"
+						value="#{msg.login}" styleClass="btn btn-success" />
+					<h:commandButton action="index" value="#{msg.cancel}"
+						styleClass="btn btn-danger" />
+				</div>
+			</h:form>
+		</div>
 
 	</div>
 </h:body>

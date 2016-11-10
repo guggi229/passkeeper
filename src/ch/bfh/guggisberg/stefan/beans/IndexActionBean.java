@@ -1,8 +1,8 @@
+package ch.bfh.guggisberg.stefan.beans;
 import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.Resource;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -93,6 +93,10 @@ public class IndexActionBean implements Serializable {
 			e.printStackTrace();
 		}
 		return "thanks";
+	}
+	
+	public void login(){
+		System.out.println("You are logged in");
 	}
 	
 	public String thanks(){
