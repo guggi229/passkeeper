@@ -33,14 +33,13 @@
 		</div>
 
 
-		 <div class="content">
+		<div class="content">
 			<table class="table table-striped">
 				<thead class="success">
 					<tr>
 						<th><h:outputText value="#{msg.passwordDesc}" /></th>
 						<th><h:outputText value="#{msg.passwordLoginName}" /></th>
 						<th><h:outputText value="#{msg.passwordClear}" /></th>
-						<th></th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -63,9 +62,8 @@
 									required="true" requiredMessage="#{msg.notNull}" /> <h:message
 									for="password" style="color:red" /></th>
 							<th></th>
-							<th></th>
 							<th><h:commandButton action="#{indexActionBean.addPassword}"
-									image="image/add2.png" alt="#{msg.passwordAdd}" /></th>
+									image="image/add3.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
 					<ui:repeat var="password" value="#{loginBean.user.passwords}">
@@ -79,9 +77,10 @@
 							<th><h:commandButton
 									action="#{indexActionBean.savePassword}" image="image/edit.png"
 									alt="#{msg.passwordSave}" /></th>
-							<h:commandButton action="#{indexActionBean.deletePassword}"
-								image="image/del.png" alt="#{msg.passwordDel}" />
-							<th><img src="image/del.png" alt="#{msg.passwordDel}" /></th>
+							<th><h:commandButton
+									action="#{indexActionBean.deletePassword}"
+									image="image/del.png" alt="#{msg.passwordDel}" /></th>
+
 						</tr>
 					</ui:repeat>
 				</tbody>
