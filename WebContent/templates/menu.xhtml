@@ -13,6 +13,8 @@
 						<li><a href="#"><h:outputText />#{loginBean.user.userName}</a></li>
 						<li><h:commandLink action="#{loginBean.doLogout}"
 								value="#{msg.logout}" /></li>
+								<li><a href="list.xhtml"><h:outputText
+									value="#{msg.yourPasswords}" /></a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="login.xhtml"><h:outputText

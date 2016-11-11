@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import javax.enterprise.context.RequestScoped;
+
 import javax.persistence.Column;
-import javax.persistence.Entity;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,6 +20,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @RequestScoped
 @Table(name="passwords")
+
 public class Password implements Serializable {
 
 	/**
@@ -25,12 +29,13 @@ public class Password implements Serializable {
 	private static final long serialVersionUID = -9170472267165197806L;
 	@Id
 	@Column(name="passwordid")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long Id;
 
 	@Column(name="passworddesc")
 	private String description;
 
-	@Column(name="passworddata")
+	@Column(name="passworddata") // Das eigentliche Passwort
 	private String password;
 	
 	@Column(name="passwordlogin")
@@ -47,10 +52,11 @@ public class Password implements Serializable {
 	public Password(){
 
 	}
-	public Password(String application, String password){
+	public Password(String desc, String password, String login){
 		super();
-		this.description = application;
+		this.description = desc;
 		this.password = password;
+		this.passwordlogin=login;
 	}
 
 	// Setter Getter
@@ -63,15 +69,7 @@ public class Password implements Serializable {
 	public void setId(Long id) {
 		Id = id;
 	}
-
-	public String getApplication() {
-		return description;
-	}
-
-	public void setApplication(String application) {
-		this.description = application;
-	}
-
+	
 	public String getPassword() {
 		return password;
 	}

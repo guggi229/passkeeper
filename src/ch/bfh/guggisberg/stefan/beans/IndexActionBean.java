@@ -1,11 +1,12 @@
 package ch.bfh.guggisberg.stefan.beans;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -19,10 +20,9 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import ch.bfh.guggisberg.stefan.model.Password;
-import ch.bfh.guggisberg.stefan.model.Test;
 import ch.bfh.guggisberg.stefan.model.User;
 @Named
-@RequestScoped 
+@RequestScoped
 public class IndexActionBean implements Serializable {
 
 	/**
@@ -32,7 +32,8 @@ public class IndexActionBean implements Serializable {
 	private boolean isAdded = false;
 
 	@Inject
-	private User user;
+	private User user;								// Wo ist die Variabel gültig? 
+	@Inject
 	private Password password;
 
 
@@ -43,11 +44,80 @@ public class IndexActionBean implements Serializable {
 	@Resource
 	private UserTransaction ut;
 
+	// Passwort 
+	// =========
+
+
+	// Passwort einfügen
+	//-------------------
+
+	public String addPassword(){
+		// Debugging
+		System.out.println("*******************************************");
+		System.out.println("Data:" + password.getPassword());
+		System.out.println("Data:" + password.getDescription());
+		System.out.println("Data:" + password.getLogin());
+		System.out.println("*******************************************");
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Username1: " + user.getUserName());
+		user =  em.find(User.class, 1L);
+		System.out.println("Start Liste:");
+		List<Password> mylist2 = user.getPasswords();
+		for (Password password : mylist2) {
+			System.out.println(password.getDescription());
+		}
+		System.out.println("Ende Liste:");
+
+		Password temp = new Password("1","2","3");
+		user.addPassword(temp);
+		temp.setUser(user);
+		em.persist(user);
+		em.persist(temp);
+		System.out.println("Start Liste:");
+		List<Password> mylist = user.getPasswords();
+		for (Password password : mylist) {
+			System.out.println(password.getDescription());
+		}
+		System.out.println("Ende Liste:");
+		System.out.println("Gespeichert");
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Username2: " + user.getUserName());
+
+		return "list";
+	}
+
+	//Passwort löschen
+	// ----------------
+
+	public String savePassword(){
+		return "list";
+
+	}
+	//Passwort ändern
+	// ----------------
+	public String deletePassword(){
+		return "list";
+
+	}
+
+
+
 	// Login
 	// Ist hier im IndexActionBean. Schöner wäre ein CRUD Service. Für unser Projekt reicht es hier!
 
 	public String checkLogin(){
-		
+
 		Query query = em.createNativeQuery("Select count(*) from user u WHERE useremail='" + user.getUserEmail()+ "' AND userpassword='"+user.getUserPassword()+"'");
 		BigInteger result = (BigInteger) query.getSingleResult();
 		if (result.intValue()>0){
@@ -60,22 +130,18 @@ public class IndexActionBean implements Serializable {
 
 
 	// Sprache
+	// =======
 
-	private static String lang = Locale.getDefault().getDisplayLanguage();
 
-	public void handleButtonClicked(ActionEvent event){
-		isAdded=true;
-		Test t1 = em.find(Test.class, 1L);
-		System.out.println("Info" + t1.getTestName());
-		User user = em.find(User.class, 1L);
-		System.out.println("Deine Email ist : " + user.getUserEmail());
-		Password p = em.find(Password.class, 1L);
-		System.out.println("Passwort für " + p.getApplication());
-		System.out.println("Passwort für : " + user.getPasswords().get(1).getApplication());
+	public String changeLang(String langCode) {
+		FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale (langCode));
+		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return null;
 	}
 
 
 	// addUser
+	// ========
 
 	public String addUser() {
 		try {
@@ -124,6 +190,7 @@ public class IndexActionBean implements Serializable {
 	}
 
 	// Allgemeine Getter und Setter
+	// ============================
 
 	public boolean isAdded() {
 		return isAdded;
@@ -132,18 +199,6 @@ public class IndexActionBean implements Serializable {
 	public void setAdded(boolean isAdded) {
 		this.isAdded = isAdded;
 	}
-
-
-	public String getLang() {
-		return lang;
-	}
-
-
-	public void setLang(String lang) {
-
-		this.lang = lang;
-	}
-
 
 	public User getUser() {
 		return user;

@@ -33,7 +33,7 @@
 		</div>
 
 
-		<div>
+		 <div class="content">
 			<table class="table table-striped">
 				<thead class="success">
 					<tr>
@@ -48,53 +48,46 @@
 				<tbody>
 					<h:form>
 						<tr>
-							<th><h:inputText class="form-group"
-									value="#{indexActionBean.password.application}" /></th>
-							<th><h:inputText class="form-group"
-									value="#{indexActionBean.password.login}" /></th>
-							<th><h:inputText class="form-group"
-									value="#{indexActionBean.password.password}" /></th>
+							<th><h:inputText styleClass="form-control"
+									value="#{indexActionBean.password.description}"
+									id="description" required="true"
+									requiredMessage="#{msg.notNull}" /> <h:message
+									for="description" style="color:red" /></th>
+							<th><h:inputText styleClass="form-control"
+									value="#{indexActionBean.password.login}" id="login"
+									required="true" requiredMessage="#{msg.notNull}" /> <h:message
+									for="login" style="color:red" /></th>
+
+							<th><h:inputText styleClass="form-control"
+									value="#{indexActionBean.password.password}" id="password"
+									required="true" requiredMessage="#{msg.notNull}" /> <h:message
+									for="password" style="color:red" /></th>
 							<th></th>
 							<th></th>
-							<th><h:commandButton
-									action="#{indexActionBean.handleButtonClicked}"
-									image="image/add.png" alt="#{msg.add}" /></th>
+							<th><h:commandButton action="#{indexActionBean.addPassword}"
+									image="image/add2.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
 					<ui:repeat var="password" value="#{loginBean.user.passwords}">
-
 						<tr>
-							<th><h:inputText class="form-group"
-									value="#{password.application}" /></th>
-							<th><h:inputText class="form-group"
-									value="#{password.login}" /></th>
-							<th><h:inputText class="form-group"
-									value="#{password.password}" /></th>
-							<th><img src="image/edit.png" alt="#{msg.edit}" /></th>
-							<th><img src="image/del.png" alt="#{msg.del}" /></th>
+							<th><h:inputText styleClass="form-control"
+									value="#{password.description}" required="true" /></th>
+							<th><h:inputText styleClass="form-control"
+									value="#{password.login}" required="true" /></th>
+							<th><h:inputText styleClass="form-control"
+									value="#{password.password}" required="true" /></th>
+							<th><h:commandButton
+									action="#{indexActionBean.savePassword}" image="image/edit.png"
+									alt="#{msg.passwordSave}" /></th>
+							<h:commandButton action="#{indexActionBean.deletePassword}"
+								image="image/del.png" alt="#{msg.passwordDel}" />
+							<th><img src="image/del.png" alt="#{msg.passwordDel}" /></th>
 						</tr>
 					</ui:repeat>
-
 				</tbody>
 			</table>
 
 		</div>
 	</div>
-	<div>
-		<h:form>
-			<h:panelGrid columns="2">
-				<h:outputLabel value="#{msg.email}" />
-				<h:inputText class="form-group"
-					value="#{registerController.user.email}" />
-				<h:outputLabel value="#{msg.password}" />
-				<h:inputSecret value="#{registerController.user.name}" />
-				<h:commandButton action="#{registerController.persist}"
-					value="#{msg.register}" />
-				<h:commandButton action="#{indexActionBean.handleButtonClicked}"
-					value="#{msg.cancel}" />
-			</h:panelGrid>
-		</h:form>
-	</div>
-
 </h:body>
 </html>

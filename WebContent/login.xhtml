@@ -28,7 +28,7 @@
 			<!-- Holt das Hauptmenu -->
 		<ui:include src="/templates/menu.xhtml" />
 		<div>
-
+<div class="content">
 			<!-- Feldlänge begrenze  -->
 			<h:form>
 
@@ -39,7 +39,7 @@
 					<h:inputText value="#{loginBean.user.userEmail}" 
 						name="#{loginBean.user.userEmail}"
 						id="userEmail" required="true" 
-						requiredMessage="Bitte ausfüllen"
+						requiredMessage="#{msg.notNull}"
 						styleClass="form-control" />
 					<h:message for="userEmail" style="color:red" />
 				</div>
@@ -50,19 +50,19 @@
 					<h:inputText value="#{loginBean.user.userPassword}" 
 					name="#{loginBean.user.userPassword}"
 					id="userPassword" required="true" 
-					requiredMessage="Bitte ausfüllen"
+					requiredMessage="#{msg.notNull}"
 					styleClass="form-control" />
 				</div>
 				<h:message for="userPassword" style="color:red" />
 				<div>
 					<h:commandButton action="#{loginBean.checkLogin}" 
-						value="#{msg.login}" styleClass="btn btn-success" />
+						value="#{msg.login}" styleClass="btn btn-success button" />
 					<h:commandButton action="index" value="#{msg.cancel}"
-						styleClass="btn btn-danger" />
+						styleClass="btn btn-danger button" />
 				</div>
 			</h:form>
 		</div>
-
+</div>
 	</div>
 </h:body>
 </html>

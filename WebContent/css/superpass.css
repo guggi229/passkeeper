@@ -16,3 +16,16 @@
 .nav-tabs {
 	margin-bottom: 0;
 	}
+/* Menü */
+.menu{
+	float: left;
+    padding: 20px;
+}
+/* Button */
+.button{
+	margin-right: 3.33333%;
+}
+/* Content */
+.content {
+	margin-top: 5%;
+}

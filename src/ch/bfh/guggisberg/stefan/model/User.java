@@ -41,7 +41,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -1330912948199950826L;
 	public static final String QUERY_CHECK_PASSWORD="QUERY_CHECK_PASSWORD";
 	public static final String PARAM_USEREMAIL="PARAM_USEREMAIL";
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="userid")
@@ -103,6 +103,8 @@ public class User implements Serializable {
 	public void setPasswords(List<Password> passwords) {
 		this.passwords = passwords;
 	}
-
+	public void addPassword(Password pass){
+		this.passwords.add(pass);
+	}
 
 }
