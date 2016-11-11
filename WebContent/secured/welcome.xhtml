@@ -20,32 +20,15 @@
 </h:head>
 <h:body>
 	<div class="container">
-
-		<ul class="nav nav-tabs">
-			<li class="active"><h:outputText value="#{msg.de}" /></li>
-			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
-		</ul>
+		<!-- Holt das Sprachmenu -->
+		<ui:include src="/templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>"#{msg.loginpage}"</p>
 		</div>
-		<ul class="nav nav-tabs">
-			<li ><a href="#"><h:outputText
-						value="#{msg.home}" /></a></li>
-			<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
-			<li><a href="register.xhtml"><h:outputText
-						value="#{msg.register}" /></a></li>
-			<c:if test="#{loginBean.logged}">
-				<li><a href="#"><h:outputText/>#{loginBean.user.userName}</a></li>
-			</c:if>
-			<c:otherwise>
-				<li><a href="login.xhtml"><h:outputText
-							value="#{msg.login}" /></a></li>
-			</c:otherwise>
-
-
-		</ul>
+		<!-- Holt das Hauptmenu -->
+		<ui:include src="/templates/menu.xhtml" />
 		<div></div>
-<p>Deine Seite</p>
+		<p>Deine Seite2</p>
 	</div>
 </h:body>
 </html>

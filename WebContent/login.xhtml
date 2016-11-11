@@ -20,22 +20,13 @@
 <h:body>
 	<div class="container">
 
-		<ul class="nav nav-tabs">
-			<li class="active"><h:outputText value="#{msg.de}" /></li>
-			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
-		</ul>
+		<!-- Holt das Sprachmenu -->
+		<ui:include src="/templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>"#{msg.loginpage}"</p>
 		</div>
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#"><h:outputText
-						value="#{msg.home}" /></a></li>
-			<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
-			<li><a href="login.xhtml"><h:outputText value="#{msg.login}" /></a></li>
-			<li><a href="register.xhtml"><h:outputText
-						value="#{msg.register}" /></a></li>
-
-		</ul>
+			<!-- Holt das Hauptmenu -->
+		<ui:include src="/templates/menu.xhtml" />
 		<div>
 
 			<!-- Feldlänge begrenze  -->

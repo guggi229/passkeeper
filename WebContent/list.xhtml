@@ -20,24 +20,16 @@
 </h:head>
 <h:body>
 	<div class="container">
-		<ul class="nav nav-tabs">
-			<li class="active"><h:outputText value="#{msg.de}" /></li>
-			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
-		</ul>
+		<!-- Holt das Sprachmenu -->
+		<ui:include src="/templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>
 				<h:outputText value="#{msg.yourPasswords}" />
 			</p>
 		</div>
 		<div>
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#"><h:outputText
-							value="#{msg.home}" /></a></li>
-				<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
-				<li><a href="login.xhtml"><h:outputText value="#{msg.login}" /></a></li>
-				<li><a href="register.xhtml"><h:outputText value="#{msg.register}" /></a></li>
-
-			</ul>
+			<!-- Holt das Hauptmenu -->
+			<ui:include src="/templates/menu.xhtml" />
 		</div>
 
 
@@ -56,20 +48,28 @@
 				<tbody>
 					<h:form>
 						<tr>
-							<th><h:inputText class="form-group" value="#{indexActionBean.password.application}" /></th>
-							<th><h:inputText class="form-group" value="#{indexActionBean.password.login}" /></th>
-							<th><h:inputText class="form-group" value="#{indexActionBean.password.password}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{indexActionBean.password.application}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{indexActionBean.password.login}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{indexActionBean.password.password}" /></th>
 							<th></th>
 							<th></th>
-							<th><h:commandButton action="#{indexActionBean.handleButtonClicked}" image="image/add.png" alt="#{msg.add}"/></th>		
+							<th><h:commandButton
+									action="#{indexActionBean.handleButtonClicked}"
+									image="image/add.png" alt="#{msg.add}" /></th>
 						</tr>
 					</h:form>
-					<ui:repeat var="password" value="#{indexActionBean.user.passwords}">
+					<ui:repeat var="password" value="#{loginBean.user.passwords}">
 
 						<tr>
-							<th><h:inputText class="form-group" value="#{password.application}" /></th>
-							<th><h:inputText class="form-group" value="#{password.login}" /></th>
-							<th><h:inputText class="form-group"  value="#{password.password}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{password.application}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{password.login}" /></th>
+							<th><h:inputText class="form-group"
+									value="#{password.password}" /></th>
 							<th><img src="image/edit.png" alt="#{msg.edit}" /></th>
 							<th><img src="image/del.png" alt="#{msg.del}" /></th>
 						</tr>
@@ -84,12 +84,14 @@
 		<h:form>
 			<h:panelGrid columns="2">
 				<h:outputLabel value="#{msg.email}" />
-				<h:inputText class="form-group" value="#{registerController.user.email}" />
+				<h:inputText class="form-group"
+					value="#{registerController.user.email}" />
 				<h:outputLabel value="#{msg.password}" />
 				<h:inputSecret value="#{registerController.user.name}" />
 				<h:commandButton action="#{registerController.persist}"
 					value="#{msg.register}" />
-				<h:commandButton action="#{indexActionBean.handleButtonClicked}" value="#{msg.cancel}" />
+				<h:commandButton action="#{indexActionBean.handleButtonClicked}"
+					value="#{msg.cancel}" />
 			</h:panelGrid>
 		</h:form>
 	</div>
