@@ -13,8 +13,11 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import ch.bfh.guggisberg.stefan.model.Password;
@@ -32,17 +35,17 @@ public class IndexActionBean implements Serializable {
 
 	@Inject
 	private User user;	
-	
+
 	@Inject
 	private User2 user2;
-	
+
 	@Inject
 	private Password password;
 
 
 	// Kommunikation zur DB und Persitierung
 	@PersistenceContext
-	private EntityManager em;
+	private static EntityManager em;
 
 	@Resource
 	private UserTransaction ut;
@@ -61,31 +64,30 @@ public class IndexActionBean implements Serializable {
 		System.out.println("Data:" + password.getDescription());
 		System.out.println("Data:" + password.getLogin());
 		System.out.println("*******************************************");
-		Query q= em.createNativeQuery(User2.QUERY_COUNT_EMAIL_ADRESSE);
-		int count = (int) q.getSingleResult();
-		System.out.println("Anzahl Datensätze" + count);
-	
-//
-//		Password temp = new Password("1","2","3");
-//		user.addPassword(temp);
-//		temp.setUser(user);
-//		em.persist(user);
-//		em.persist(temp);
-//		System.out.println("Start Liste:");
-//		List<Password> mylist = user.getPasswords();
-//		for (Password password : mylist) {
-//			System.out.println(password.getDescription());
-//		}
-//		System.out.println("Ende Liste:");
-//		System.out.println("Gespeichert");
-//		try {
-//			ut.commit();
-//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-//				| HeuristicRollbackException | SystemException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("Username2: " + user.getUserName());
+		
+
+
+		//
+		//		Password temp = new Password("1","2","3");
+		//		user.addPassword(temp);
+		//		temp.setUser(user);
+		//		em.persist(user);
+		//		em.persist(temp);
+		//		System.out.println("Start Liste:");
+		//		List<Password> mylist = user.getPasswords();
+		//		for (Password password : mylist) {
+		//			System.out.println(password.getDescription());
+		//		}
+		//		System.out.println("Ende Liste:");
+		//		System.out.println("Gespeichert");
+		//		try {
+		//			ut.commit();
+		//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+		//				| HeuristicRollbackException | SystemException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+		//		System.out.println("Username2: " + user.getUserName());
 
 		return "list";
 	}
@@ -136,16 +138,33 @@ public class IndexActionBean implements Serializable {
 	// addUser
 	// ========
 
-	public String addUser() {
-		System.out.println("Emailadresse: "+ user2.getUserEmail());
-		Query q= em.createNativeQuery("SELECT COUNT(*) FROM bfhschema.user where userEmail=:email");
-		q.setParameter("email", user2.getUserEmail());
-		BigInteger count = (BigInteger) q.getSingleResult();
-		System.out.println("Anzahl Datensätze" + count.intValue());
+	public String addUser()  {
+		
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		User2 t = new User2();
+		t.setUserEmail(user2.getUserEmail());
+		t.setUserName(user2.getUserName());
+		t.setUserPassword(user2.getUserPassword());
+		em.persist(t);
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+
 		return "thanks";
 	}
 	public void checkEmail(FacesContext context, UIComponent component, Object value){
-		
+
 	}
 
 	public void login(){
@@ -197,5 +216,8 @@ public class IndexActionBean implements Serializable {
 		this.user2 = user2;
 	}
 
+	public static EntityManager getEntityManager(){
+		return em;
+	}
 
 }

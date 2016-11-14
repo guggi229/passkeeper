@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
 
 
 ;
@@ -24,13 +25,10 @@ import javax.persistence.NamedNativeQuery;
 @Named
 @RequestScoped
 @Entity
-@NamedNativeQueries({
-	@NamedNativeQuery(name=User2.QUERY_COUNT_EMAIL_ADRESSE,query="SELECT COUNT(*) FROM bfhschema.user where userEmail='123'")
-}) 
+@Table(name="user")
 public class User2 implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
-	public static final String QUERY_COUNT_EMAIL_ADRESSE="QUERY_COUNT_EMAIL_ADRESSE";
 		
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
