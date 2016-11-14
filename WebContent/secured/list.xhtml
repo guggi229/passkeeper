@@ -11,17 +11,17 @@
 <h:head>
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
 	<meta name="viewport" content="width-device-width, initial-scale=1" />
-	<link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="css/bootstrap-theme.css" />
-	<link rel="stylesheet" href="css/superpass.css" />
-	<script src="scripts/jquery-3.1.1.min.js"></script>
-	<script src="scripts/bootstrap.js"></script>
+	<link rel="stylesheet" href="../css/bootstrap.css" />
+	<link rel="stylesheet" href="../css/bootstrap-theme.css" />
+	<link rel="stylesheet" href="../css/superpass.css" />
+	<script src="../scripts/jquery-3.1.1.min.js"></script>
+	<script src="../scripts/bootstrap.js"></script>
 	<title><h:outputText value="#{msg.title}" /></title>
 </h:head>
 <h:body>
 	<div class="container">
 		<!-- Holt das Sprachmenu -->
-		<ui:include src="/templates/menu_language.xhtml" />
+		<ui:include src="../templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>
 				<h:outputText value="#{msg.yourPasswords}" />
@@ -63,7 +63,7 @@
 									for="password" style="color:red" /></th>
 							<th></th>
 							<th><h:commandButton action="#{indexActionBean.addPassword}"
-									image="image/add3.png" alt="#{msg.passwordAdd}" /></th>
+									image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
 					<ui:repeat var="password" value="#{loginBean.user.passwords}">
@@ -75,11 +75,11 @@
 							<th><h:inputText styleClass="form-control"
 									value="#{password.password}" required="true" /></th>
 							<th><h:commandButton
-									action="#{indexActionBean.savePassword}" image="image/edit.png"
+									action="#{indexActionBean.savePassword}" image="../image/edit.png"
 									alt="#{msg.passwordSave}" /></th>
 							<th><h:commandButton
 									action="#{indexActionBean.deletePassword}"
-									image="image/del.png" alt="#{msg.passwordDel}" /></th>
+									image="../image/del.png" alt="#{msg.passwordDel}" /></th>
 
 						</tr>
 					</ui:repeat>

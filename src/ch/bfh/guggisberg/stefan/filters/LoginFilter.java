@@ -18,8 +18,12 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		LoginBean loginBean = (LoginBean)((HttpServletRequest)request).getSession().getAttribute("loginBean");
-		System.out.println("LoginFilter aktiv");
+		 HttpServletRequest req = (HttpServletRequest) request;
+		 LoginBean loginBean = (LoginBean) req.getSession().getAttribute("loginBean");
+		
+		if(loginBean==null){
+			System.out.println("Logging bean null");
+		}
 		if(loginBean==null || !loginBean.isLogged()) {
 			System.out.println("LoginFilter: Login ok!");
 			String contextPath = ((HttpServletRequest)request).getContextPath();

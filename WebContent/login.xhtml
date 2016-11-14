@@ -21,7 +21,7 @@
 	<div class="container">
 
 		<!-- Holt das Sprachmenu -->
-		<ui:include src="/templates/menu_language.xhtml" />
+		<ui:include src="templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>#{msg.loginpage}</p>
 		</div>
@@ -36,8 +36,8 @@
 				<div class="form-group">
 					<h:outputLabel value="#{msg.email}" />
 					
-					<h:inputText value="#{loginBean.user.userEmail}" 
-						name="#{loginBean.user.userEmail}"
+					<h:inputText value="#{loginBean.email}" 
+						name="#{loginBean.email}"
 						id="userEmail" required="true" 
 						requiredMessage="#{msg.notNull}"
 						styleClass="form-control" />
@@ -47,8 +47,8 @@
 				<div class="form-group">
 					<label>Ihr Masterpassword</label>
 					
-					<h:inputText value="#{loginBean.user.userPassword}" 
-					name="#{loginBean.user.userPassword}"
+					<h:inputText value="#{loginBean.pass}" 
+					name="#{loginBean.pass}"
 					id="userPassword" required="true" 
 					requiredMessage="#{msg.notNull}"
 					styleClass="form-control" />

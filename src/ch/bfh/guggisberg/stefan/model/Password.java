@@ -45,7 +45,7 @@ public class Password implements Serializable {
 //	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "useridfk", nullable = false)
-	private User user;
+	private User2 user;
 	
 	
 	// Kosntruktor
@@ -89,10 +89,10 @@ public class Password implements Serializable {
 	public void setLogin(String login) {
 		this.passwordlogin = login;
 	}
-	public User getUser() {
+	public User2 getUser() {
 		return user;
 	}
-	public void setUser(User user) {
+	public void setUser(User2 user) {
 		this.user = user;
 	}
 	

@@ -1,15 +1,19 @@
 package ch.bfh.guggisberg.stefan.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -44,6 +48,10 @@ public class User2 implements Serializable {
 	@Column(name="useremail")
 	private String userEmail;
 
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="user")
+	private List <Password> passwords; 
+
+	
 	// Gette Setter
 	public Long getId() {
 		return id;
@@ -76,7 +84,16 @@ public class User2 implements Serializable {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+	public List<Password> getPasswords() {
+		return passwords;
+	}
 
+	public void setPasswords(List<Password> passwords) {
+		this.passwords = passwords;
+	}
+	public void addPassword(Password pass){
+		this.passwords.add(pass);
+	}
 	
 
 }
