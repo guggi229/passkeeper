@@ -17,10 +17,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
-@RequestScoped
-@Table(name="passwords")
 
+@RequestScoped
+@Entity
+@Table(name="passwords")
 public class Password implements Serializable {
 
 	/**

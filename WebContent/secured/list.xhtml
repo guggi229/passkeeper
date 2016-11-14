@@ -67,12 +67,13 @@
 						</tr>
 					</h:form>
 					<ui:repeat var="password" value="#{loginBean.user.passwords}">
+						<h:form>
 						<tr>
-							<th><h:inputText styleClass="form-control"
+							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.description}"
 									value="#{password.description}" required="true" /></th>
-							<th><h:inputText styleClass="form-control"
+							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.login}"
 									value="#{password.login}" required="true" /></th>
-							<th><h:inputText styleClass="form-control"
+							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.password}"
 									value="#{password.password}" required="true" /></th>
 							<th><h:commandButton
 									action="#{indexActionBean.savePassword}" image="../image/edit.png"
@@ -80,8 +81,9 @@
 							<th><h:commandButton
 									action="#{indexActionBean.deletePassword}"
 									image="../image/del.png" alt="#{msg.passwordDel}" /></th>
-
+							<h:inputHidden value="#{password.id}" name="#{indexActionBean.password.id}"/>
 						</tr>
+						</h:form>
 					</ui:repeat>
 				</tbody>
 			</table>

@@ -58,15 +58,7 @@ public class IndexActionBean implements Serializable {
 	//-------------------
 
 	public String addPassword(){
-		// Debugging
-		System.out.println("*******************************************");
-		System.out.println("Data:" + password.getPassword());
-		System.out.println("Data:" + password.getDescription());
-		System.out.println("Data:" + password.getLogin());
-		System.out.println("*******************************************");
 		
-
-
 		//
 		//		Password temp = new Password("1","2","3");
 		//		user.addPassword(temp);
@@ -94,16 +86,18 @@ public class IndexActionBean implements Serializable {
 
 	//Passwort löschen
 	// ----------------
-
-	public String savePassword(){
+	public String deletePassword(){
+		System.out.println("Zu löschendem Objekt" + password.getDescription());
 		return "list";
 
 	}
+	
+	
+	
 	//Passwort ändern
 	// ----------------
-	public String deletePassword(){
+	public String savePassword(){
 		return "list";
-
 	}
 
 
