@@ -6,21 +6,20 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
+
+
 import javax.transaction.UserTransaction;
 
 import ch.bfh.guggisberg.stefan.model.Password;
 import ch.bfh.guggisberg.stefan.model.User;
+import ch.bfh.guggisberg.stefan.model.User2;
 @Named
 @RequestScoped
 public class IndexActionBean implements Serializable {
@@ -32,7 +31,11 @@ public class IndexActionBean implements Serializable {
 	private boolean isAdded = false;
 
 	@Inject
-	private User user;								// Wo ist die Variabel gültig? 
+	private User user;	
+	
+	@Inject
+	private User2 user2;
+	
 	@Inject
 	private Password password;
 
@@ -58,41 +61,31 @@ public class IndexActionBean implements Serializable {
 		System.out.println("Data:" + password.getDescription());
 		System.out.println("Data:" + password.getLogin());
 		System.out.println("*******************************************");
-		try {
-			ut.begin();
-		} catch (NotSupportedException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Username1: " + user.getUserName());
-		user =  em.find(User.class, 1L);
-		System.out.println("Start Liste:");
-		List<Password> mylist2 = user.getPasswords();
-		for (Password password : mylist2) {
-			System.out.println(password.getDescription());
-		}
-		System.out.println("Ende Liste:");
-
-		Password temp = new Password("1","2","3");
-		user.addPassword(temp);
-		temp.setUser(user);
-		em.persist(user);
-		em.persist(temp);
-		System.out.println("Start Liste:");
-		List<Password> mylist = user.getPasswords();
-		for (Password password : mylist) {
-			System.out.println(password.getDescription());
-		}
-		System.out.println("Ende Liste:");
-		System.out.println("Gespeichert");
-		try {
-			ut.commit();
-		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-				| HeuristicRollbackException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Username2: " + user.getUserName());
+		Query q= em.createNativeQuery(User2.QUERY_COUNT_EMAIL_ADRESSE);
+		int count = (int) q.getSingleResult();
+		System.out.println("Anzahl Datensätze" + count);
+	
+//
+//		Password temp = new Password("1","2","3");
+//		user.addPassword(temp);
+//		temp.setUser(user);
+//		em.persist(user);
+//		em.persist(temp);
+//		System.out.println("Start Liste:");
+//		List<Password> mylist = user.getPasswords();
+//		for (Password password : mylist) {
+//			System.out.println(password.getDescription());
+//		}
+//		System.out.println("Ende Liste:");
+//		System.out.println("Gespeichert");
+//		try {
+//			ut.commit();
+//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+//				| HeuristicRollbackException | SystemException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("Username2: " + user.getUserName());
 
 		return "list";
 	}
@@ -144,38 +137,15 @@ public class IndexActionBean implements Serializable {
 	// ========
 
 	public String addUser() {
-		try {
-			ut.begin();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		em.persist(user);
-		try {
-			ut.commit();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("Emailadresse: "+ user2.getUserEmail());
+		Query q= em.createNativeQuery("SELECT COUNT(*) FROM bfhschema.user where userEmail=:email");
+		q.setParameter("email", user2.getUserEmail());
+		BigInteger count = (BigInteger) q.getSingleResult();
+		System.out.println("Anzahl Datensätze" + count.intValue());
 		return "thanks";
+	}
+	public void checkEmail(FacesContext context, UIComponent component, Object value){
+		
 	}
 
 	public void login(){
@@ -217,6 +187,14 @@ public class IndexActionBean implements Serializable {
 
 	public void setPassword(Password password) {
 		this.password = password;
+	}
+
+	public User2 getUser2() {
+		return user2;
+	}
+
+	public void setUser2(User2 user2) {
+		this.user2 = user2;
 	}
 
 

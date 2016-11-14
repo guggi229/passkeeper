@@ -3,6 +3,7 @@
 	<persistence-unit name="SuperPass">
 		<jta-data-source>java:/MySqlDS</jta-data-source>
 	<class>ch.bfh.guggisberg.stefan.model.User</class>
+	<class>ch.bfh.guggisberg.stefan.model.User2</class>
 	<class>ch.bfh.guggisberg.stefan.model.Password</class>
 	</persistence-unit>
 </persistence>

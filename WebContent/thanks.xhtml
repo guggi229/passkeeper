@@ -18,29 +18,16 @@
 	<title><h:outputText value="#{msg.title}" /></title>
 </h:head>
 <h:body>
-	<div class="container">
-		<div class="page-header">
-			<h1>Test</h1>
-		</div>
-		<ul class="nav nav-tabs">
-			<li class="active"><h:outputText value="#{msg.de}" /></li>
-			<li><a href="#"><h:outputText value="#{msg.fr}" /></a></li>
-		</ul>
-		<div class="jumbotron">
-			<p>
-				<h:outputText value="#{msg.newUser}" />
-			</p>
-		</div>
-		<div>
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#"><h:outputText
-							value="#{msg.home}" /></a></li>
-				<li><a href="#"><h:outputText value="#{msg.lang}" /></a></li>
-				<li><a href="#"><h:outputText value="#{msg.login}" /></a></li>
+<div class="container">
 
-			</ul>
+		<!-- Holt das Sprachmenu -->
+		<ui:include src="/templates/menu_language.xhtml" />
+		<div class="jumbotron">
+			<p>#{msg.loginpage}</p>
 		</div>
-		<div>Thanks</div>
+			<!-- Holt das Hauptmenu -->
+		<ui:include src="/templates/menu.xhtml" />
+		<div class="content">Thanks</div>
 	</div>
 </h:body>
 </html>

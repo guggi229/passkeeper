@@ -1,22 +1,19 @@
 package ch.bfh.guggisberg.stefan.model;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
+
+;
+
 
 /**
  * Dieses Model repräsentiert den User
@@ -24,15 +21,17 @@ import javax.persistence.Table;
  * @author guggi229
  *
  */
-@Entity
-@RequestScoped
-@Table(name="user") //SessionScoped?
 @Named
-
-public class User implements Serializable {
+@RequestScoped
+@Entity
+@NamedNativeQueries({
+	@NamedNativeQuery(name=User2.QUERY_COUNT_EMAIL_ADRESSE,query="SELECT COUNT(*) FROM bfhschema.user where userEmail='123'")
+}) 
+public class User2 implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
-	
+	public static final String QUERY_COUNT_EMAIL_ADRESSE="QUERY_COUNT_EMAIL_ADRESSE";
+		
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="userid")
@@ -46,13 +45,6 @@ public class User implements Serializable {
 
 	@Column(name="useremail")
 	private String userEmail;
-
-
-	//
-
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="user")
-	private List <Password> passwords; 
-
 
 	// Gette Setter
 	public Long getId() {
@@ -87,15 +79,6 @@ public class User implements Serializable {
 		this.userEmail = userEmail;
 	}
 
-	public List<Password> getPasswords() {
-		return passwords;
-	}
-
-	public void setPasswords(List<Password> passwords) {
-		this.passwords = passwords;
-	}
-	public void addPassword(Password pass){
-		this.passwords.add(pass);
-	}
+	
 
 }
