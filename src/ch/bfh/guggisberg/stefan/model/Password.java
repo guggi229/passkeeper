@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 @RequestScoped
 @Entity
 @Table(name="passwords")
+@Named
 public class Password implements Serializable {
 
 	/**
@@ -30,7 +31,7 @@ public class Password implements Serializable {
 	@Id
 	@Column(name="passwordid")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 
 	@Column(name="passworddesc")
 	private String description;
@@ -63,11 +64,11 @@ public class Password implements Serializable {
 	// =============
 
 	public Long getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 	
 	public String getPassword() {

@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -42,6 +44,11 @@ public class IndexActionBean implements Serializable {
 	@Inject
 	private Password password;
 
+	private String passwordid;
+
+	@Inject
+	private Password passwordItem;
+
 
 	// Kommunikation zur DB und Persitierung
 	@PersistenceContext
@@ -58,42 +65,80 @@ public class IndexActionBean implements Serializable {
 	//-------------------
 
 	public String addPassword(){
-		
-		//
-		//		Password temp = new Password("1","2","3");
-		//		user.addPassword(temp);
-		//		temp.setUser(user);
-		//		em.persist(user);
-		//		em.persist(temp);
-		//		System.out.println("Start Liste:");
-		//		List<Password> mylist = user.getPasswords();
-		//		for (Password password : mylist) {
-		//			System.out.println(password.getDescription());
-		//		}
-		//		System.out.println("Ende Liste:");
-		//		System.out.println("Gespeichert");
-		//		try {
-		//			ut.commit();
-		//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-		//				| HeuristicRollbackException | SystemException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		System.out.println("Username2: " + user.getUserName());
 
+		// User Suchen
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
+		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
+		if (lg==null) return "login"; 		
+		System.out.println("User: " + lg.getEmail());
+		System.out.println("Neues Password:");
+		System.out.println(password.getDescription());
+
+		// Password speichern
+		// ==================
+
+		// Entity des Users laden
+
+		user2 = em.find(User2.class, lg.getUser().getId());
+		System.out.println("Folgender User aus der Session geladen:" + user2.getUserEmail());
+
+		System.out.println("Passwort Daten: ");
+		System.out.println(password.getDescription());
+		System.out.println(password.getLogin());
+		System.out.println(password.getPassword());
+		// User / Password zusammenführen 
+		//user2.addPassword(password);
+		//password.setUser(user2);		
+
+		// Alles Persistieren
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+		Password t = new Password(); //Warum müssen die Atribute mit Set gesetzt werden? em.persist(password); müsste doch auch gehen?
+		t.setDescription(password.getDescription());
+		t.setLogin(password.getLogin());
+		t.setPassword(password.getPassword());
+		t.setUser(user2);
+		user2.addPassword(t);
+
+		em.merge(user2);
+		em.persist(t);
+		lg.setUser(user2);
+
+
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Message senden!
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Das Password wurde erfolgreich gespeichert", "gespeichert");
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, facesMsg);
+
+		password=null;
 		return "list";
 	}
 
 	//Passwort löschen
 	// ----------------
 	public String deletePassword(){
-		System.out.println("Zu löschendem Objekt" + password.getDescription());
+		System.out.println("Zu löschendem Objekt: " + passwordItem.getId()+"tototo");
 		return "list";
 
 	}
-	
-	
-	
+
+
+
 	//Passwort ändern
 	// ----------------
 	public String savePassword(){
@@ -133,7 +178,7 @@ public class IndexActionBean implements Serializable {
 	// ========
 
 	public String addUser()  {
-		
+
 		try {
 			ut.begin();
 		} catch (NotSupportedException | SystemException e) {
@@ -152,8 +197,8 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 
 		return "thanks";
 	}
@@ -212,6 +257,22 @@ public class IndexActionBean implements Serializable {
 
 	public static EntityManager getEntityManager(){
 		return em;
+	}
+
+	public String getPasswordid() {
+		return passwordid;
+	}
+
+	public void setPasswordid(String passwordid) {
+		this.passwordid = passwordid;
+	}
+
+	public Password getPasswordItem() {
+		return passwordItem;
+	}
+
+	public void setPasswordItem(Password passwordItem) {
+		this.passwordItem = passwordItem;
 	}
 
 }

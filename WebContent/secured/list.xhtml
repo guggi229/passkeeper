@@ -31,7 +31,9 @@
 			<!-- Holt das Hauptmenu -->
 			<ui:include src="/templates/menu.xhtml" />
 		</div>
-
+		<div>
+			<h:messages style="color:green;margin:8px;" globalOnly="true" />
+		</div>
 
 		<div class="content">
 			<table class="table table-striped">
@@ -66,23 +68,25 @@
 									image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
-					<ui:repeat var="password" value="#{loginBean.user.passwords}">
+					<ui:repeat var="#{passwordItem}"
+						value="#{loginBean.user.passwords}">
 						<h:form>
-						<tr>
-							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.description}"
-									value="#{password.description}" required="true" /></th>
-							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.login}"
-									value="#{password.login}" required="true" /></th>
-							<th><h:inputText styleClass="form-control" name="#{indexActionBean.password.password}"
-									value="#{password.password}" required="true" /></th>
-							<th><h:commandButton
-									action="#{indexActionBean.savePassword}" image="../image/edit.png"
-									alt="#{msg.passwordSave}" /></th>
-							<th><h:commandButton
-									action="#{indexActionBean.deletePassword}"
-									image="../image/del.png" alt="#{msg.passwordDel}" /></th>
-							<h:inputHidden value="#{password.id}" name="#{indexActionBean.password.id}"/>
-						</tr>
+							<tr>
+								<th><h:inputText styleClass="form-control" id="description"
+										value="#{passwordItem.description}" required="true" /></th>
+								<th><h:inputText styleClass="form-control" id="login"
+										value="#{passwordItem.login}" required="true" /></th>
+								<th><h:inputText styleClass="form-control" id="password"
+										value="#{passwordItem.password}" required="true" /></th>
+								<th><h:commandButton
+										action="#{indexActionBean.savePassword}"
+										image="../image/edit.png" alt="#{msg.passwordSave}" /></th>
+								<th><h:commandButton
+										action="#{indexActionBean.deletePassword}"
+										image="../image/del.png" alt="#{msg.passwordDel}" /></th>
+								<h:inputHidden value="#{indexActionBean.passwordItem.id}"
+									id="id" />
+							</tr>
 						</h:form>
 					</ui:repeat>
 				</tbody>
