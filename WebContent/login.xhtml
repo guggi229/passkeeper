@@ -4,6 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
+	<f:view locale="#{loginBean.locale}">
 <f:loadBundle basename="messages" var="msg" />
 <h:head>
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
@@ -28,6 +29,9 @@
 			<!-- Holt das Hauptmenu -->
 		<ui:include src="/templates/menu.xhtml" />
 		<div>
+			<h:messages style="color:red;margin:8px;" globalOnly="true" />
+		</div>
+		<div>
 <div class="content">
 			<!-- Feldlänge begrenze  -->
 			<h:form>
@@ -43,11 +47,11 @@
 						styleClass="form-control" />
 					<h:message for="userEmail" style="color:red" />
 				</div>
-				
+	
 				<div class="form-group">
 					<label>Ihr Masterpassword</label>
 					
-					<h:inputText value="#{loginBean.pass}" 
+					<h:inputSecret  value="#{loginBean.pass}" 
 					name="#{loginBean.pass}"
 					id="userPassword" required="true" 
 					requiredMessage="#{msg.notNull}"
@@ -65,4 +69,5 @@
 </div>
 	</div>
 </h:body>
+</f:view>
 </html>

@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-
+<f:view locale="#{loginBean.locale}">
 <f:loadBundle basename="messages" var="msg" />
 <h:head>
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
@@ -68,24 +68,24 @@
 									image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
-					<ui:repeat var="#{passwordItem}"
+					<ui:repeat var="p"
 						value="#{loginBean.user.passwords}">
-						<h:form>
+						<h:form id="pass">
 							<tr>
 								<th><h:inputText styleClass="form-control" id="description"
-										value="#{passwordItem.description}" required="true" /></th>
+										value="#{p.description}" required="true" /></th>
 								<th><h:inputText styleClass="form-control" id="login"
-										value="#{passwordItem.login}" required="true" /></th>
+										value="#{p.login}" required="true" /></th>
 								<th><h:inputText styleClass="form-control" id="password"
-										value="#{passwordItem.password}" required="true" /></th>
+										value="#{p.password}" required="true" /></th>
 								<th><h:commandButton
 										action="#{indexActionBean.savePassword}"
 										image="../image/edit.png" alt="#{msg.passwordSave}" /></th>
 								<th><h:commandButton
-										action="#{indexActionBean.deletePassword}"
+										action="#{indexActionBean.deletePassword(p)}"
 										image="../image/del.png" alt="#{msg.passwordDel}" /></th>
-								<h:inputHidden value="#{indexActionBean.passwordItem.id}"
-									id="id" />
+								<h:inputHidden value="#{p.id}" id="id" 
+									 />
 							</tr>
 						</h:form>
 					</ui:repeat>
@@ -95,4 +95,5 @@
 		</div>
 	</div>
 </h:body>
+</f:view>
 </html>

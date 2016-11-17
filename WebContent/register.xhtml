@@ -5,7 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-
+<f:view locale="#{loginBean.locale}">
 <f:loadBundle basename="messages" var="msg" />
 <h:head>
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
@@ -68,4 +68,5 @@
 	</div>
 
 </h:body>
+</f:view>
 </html>

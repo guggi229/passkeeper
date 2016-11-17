@@ -31,7 +31,7 @@ import javax.persistence.Table;
 public class User2 implements Serializable {
 
 	private static final long serialVersionUID = -1330912948199950826L;
-		
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="userid")
@@ -49,7 +49,7 @@ public class User2 implements Serializable {
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="user")
 	private List <Password> passwords; 
 
-	
+
 	// Gette Setter
 	public Long getId() {
 		return id;
@@ -92,6 +92,6 @@ public class User2 implements Serializable {
 	public void addPassword(Password pass){
 		this.passwords.add(pass);
 	}
-	
+
 
 }

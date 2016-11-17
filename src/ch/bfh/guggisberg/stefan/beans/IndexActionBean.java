@@ -1,8 +1,8 @@
 package ch.bfh.guggisberg.stefan.beans;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -44,11 +44,8 @@ public class IndexActionBean implements Serializable {
 	@Inject
 	private Password password;
 
-	private String passwordid;
-
 	@Inject
-	private Password passwordItem;
-
+	private Password pass;
 
 	// Kommunikation zur DB und Persitierung
 	@PersistenceContext
@@ -131,10 +128,36 @@ public class IndexActionBean implements Serializable {
 
 	//Passwort löschen
 	// ----------------
-	public String deletePassword(){
-		System.out.println("Zu löschendem Objekt: " + passwordItem.getId()+"tototo");
-		return "list";
+	public String deletePassword(Password p){
+		// User Suchen
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
+		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
+		if (lg==null) return "login"; 	
+		Query query = em.createNativeQuery("Delete FROM Passwords WHERE passwordid=" + p.getId());
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int deletedCount = query.executeUpdate();
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		if (deletedCount>0){
+			// Message senden!
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Das Password wurde erfolgreich gelöscht", "löschen");
+			FacesContext fc = FacesContext.getCurrentInstance();
+			fc.addMessage(null, facesMsg);
+		}else{
+			System.out.println("Löschen nicht möglich. ID: " + p.getId() );
+		}
+		return "list";
 	}
 
 
@@ -151,7 +174,6 @@ public class IndexActionBean implements Serializable {
 	// Ist hier im IndexActionBean. Schöner wäre ein CRUD Service. Für unser Projekt reicht es hier!
 
 	public String checkLogin(){
-
 		Query query = em.createNativeQuery("Select count(*) from user u WHERE useremail='" + user.getUserEmail()+ "' AND userpassword='"+user.getUserPassword()+"'");
 		BigInteger result = (BigInteger) query.getSingleResult();
 		if (result.intValue()>0){
@@ -167,10 +189,9 @@ public class IndexActionBean implements Serializable {
 	// =======
 
 
-	public String changeLang(String langCode) {
+	public void changeLang(String langCode) {
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale (langCode));
 		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
-		return null;
 	}
 
 
@@ -259,20 +280,15 @@ public class IndexActionBean implements Serializable {
 		return em;
 	}
 
-	public String getPasswordid() {
-		return passwordid;
+
+	public Password getPass() {
+		System.out.println("********************************************************** Get Pass");
+		return pass;
 	}
 
-	public void setPasswordid(String passwordid) {
-		this.passwordid = passwordid;
-	}
-
-	public Password getPasswordItem() {
-		return passwordItem;
-	}
-
-	public void setPasswordItem(Password passwordItem) {
-		this.passwordItem = passwordItem;
+	public void setPass(Password pass) {
+		System.out.println("********************************************************** Set Pass");
+		this.pass = pass;
 	}
 
 }
