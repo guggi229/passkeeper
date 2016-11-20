@@ -29,3 +29,10 @@
 .content {
 	margin-top: 5%;
 }
+/* Message Style (Error and Info) */
+.info {
+     color: green;
+}
+.error {
+     color: red;
+}

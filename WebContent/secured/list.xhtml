@@ -7,92 +7,94 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 <f:view locale="#{loginBean.locale}">
-<f:loadBundle basename="messages" var="msg" />
-<h:head>
-	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
-	<meta name="viewport" content="width-device-width, initial-scale=1" />
-	<link rel="stylesheet" href="../css/bootstrap.css" />
-	<link rel="stylesheet" href="../css/bootstrap-theme.css" />
-	<link rel="stylesheet" href="../css/superpass.css" />
-	<script src="../scripts/jquery-3.1.1.min.js"></script>
-	<script src="../scripts/bootstrap.js"></script>
-	<title><h:outputText value="#{msg.title}" /></title>
-</h:head>
-<h:body>
-	<div class="container">
-		<!-- Holt das Sprachmenu -->
-		<ui:include src="../templates/menu_language.xhtml" />
-		<div class="jumbotron">
-			<p>
-				<h:outputText value="#{msg.editPasswords}" />
-			</p>
-		</div>
-		<div>
-			<!-- Holt das Hauptmenu -->
-			<ui:include src="/templates/menu.xhtml" />
-		</div>
-		<div>
-			<h:messages style="color:green;margin:8px;" globalOnly="true" />
-		</div>
+	<f:loadBundle basename="messages" var="msg" />
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+		<meta name="viewport" content="width-device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/bootstrap.css" />
+		<link rel="stylesheet" href="../css/bootstrap-theme.css" />
+		<link rel="stylesheet" href="../css/superpass.css" />
+		<script src="../scripts/jquery-3.1.1.min.js"></script>
+		<script src="../scripts/bootstrap.js"></script>
+		<title><h:outputText value="#{msg.title}" /></title>
+	</h:head>
+	<h:body>
+		<div class="container">
+			<!-- Holt das Sprachmenu -->
+			<ui:include src="../templates/menu_language.xhtml" />
+			<div class="jumbotron">
+				<p>
+					<h:outputText value="#{msg.editPasswords}" />
+				</p>
+			</div>
+			<div>
+				<!-- Holt das Hauptmenu -->
+				<ui:include src="/templates/menu.xhtml" />
+			</div>
+			<div>
+				<h:messages infoClass="info" errorClass="error" globalOnly="true" />
+			</div>
 
-		<div class="content">
-			<table class="table table-striped">
-				<thead class="success">
-					<tr>
-						<th><h:outputText value="#{msg.passwordDesc}" /></th>
-						<th><h:outputText value="#{msg.passwordLoginName}" /></th>
-						<th><h:outputText value="#{msg.passwordClear}" /></th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<h:form>
+			<div class="content">
+				<table class="table table-striped">
+					<thead class="success">
 						<tr>
-							<th><h:inputText styleClass="form-control"
-									value="#{indexActionBean.password.description}"
-									id="description" required="true"
-									requiredMessage="#{msg.notNull}" /> <h:message
-									for="description" style="color:red" /></th>
-							<th><h:inputText styleClass="form-control"
-									value="#{indexActionBean.password.login}" id="login"
-									required="true" requiredMessage="#{msg.notNull}" /> <h:message
-									for="login" style="color:red" /></th>
-
-							<th><h:inputText styleClass="form-control"
-									value="#{indexActionBean.password.password}" id="password"
-									required="true" requiredMessage="#{msg.notNull}" /> <h:message
-									for="password" style="color:red" /></th>
+							<th><h:outputText value="#{msg.passwordDesc}" /></th>
+							<th><h:outputText value="#{msg.passwordLoginName}" /></th>
+							<th><h:outputText value="#{msg.passwordClear}" /></th>
 							<th></th>
-							<th><h:commandButton action="#{indexActionBean.addPassword}"
-									image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
+							<th></th>
 						</tr>
-					</h:form>
-					<ui:repeat var="p" value="#{loginBean.user.passwords}">
-						<h:form id="pass">
+					</thead>
+					<tbody>
+						<h:form>
 							<tr>
-								<th><h:inputText styleClass="form-control" id="description"
-										value="#{p.description}" required="true" /></th>
-								<th><h:inputText styleClass="form-control" id="login"
-										value="#{p.login}" required="true" /></th>
-								<th><h:inputText styleClass="form-control" id="password"
-										value="#{p.password}" required="true" /></th>
-								<h:inputHidden value="#{p.id}" id="id"  />
+								<th><h:inputText styleClass="form-control"
+										value="#{indexActionBean.password.description}"
+										id="description" required="true"
+										requiredMessage="#{msg.notNull}" /> <h:message
+										for="description" style="color:red" /></th>
+								<th><h:inputText styleClass="form-control"
+										value="#{indexActionBean.password.login}" id="login"
+										required="true" requiredMessage="#{msg.notNull}" /> <h:message
+										for="login" style="color:red" /></th>
+
+								<th><h:inputText styleClass="form-control"
+										value="#{indexActionBean.password.password}" id="password"
+										required="true" requiredMessage="#{msg.notNull}" /> <h:message
+										for="password" style="color:red" /></th>
+								<th></th>
 								<th><h:commandButton
-										action="#{indexActionBean.editPassword(p)}"
-										image="../image/edit.png" alt="#{msg.passwordSave}" /></th>
-								<th><h:commandButton
-										action="#{indexActionBean.deletePassword(p)}"
-										image="../image/del.png" alt="#{msg.passwordDel}" immediate="true"/></th>
-								
+										action="#{indexActionBean.addPassword}"
+										image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
 							</tr>
 						</h:form>
-					</ui:repeat>
-				</tbody>
-			</table>
+						<ui:repeat var="p" value="#{loginBean.user.passwords}">
+							<h:form id="pass">
+								<tr>
+									<th><h:outputText styleClass="form-control"
+											value="#{p.description}" /></th>
+									<th><h:outputText styleClass="form-control"
+											value="#{p.login}" /></th>
+									<th><h:outputText styleClass="form-control"
+											value="#{p.password}" /></th>
+									<h:inputHidden value="#{p.id}" id="id" />
+									<th><h:commandButton
+											action="#{indexActionBean.editPassword(p)}"
+											image="../image/edit.png" alt="#{msg.passwordSave}" /></th>
+									<th><h:commandButton
+											action="#{indexActionBean.deletePassword(p)}"
+											image="../image/del.png" alt="#{msg.passwordDel}"
+											immediate="true" /></th>
 
+								</tr>
+							</h:form>
+						</ui:repeat>
+					</tbody>
+				</table>
+
+			</div>
 		</div>
-	</div>
-</h:body>
+	</h:body>
 </f:view>
 </html>

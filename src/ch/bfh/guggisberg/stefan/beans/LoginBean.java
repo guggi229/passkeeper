@@ -2,30 +2,21 @@ package ch.bfh.guggisberg.stefan.beans;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.ResourceBundle;
+
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.annotation.Resource;
 
-
 import javax.inject.Inject;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-
 import ch.bfh.guggisberg.stefan.model.Password;
 import ch.bfh.guggisberg.stefan.model.User2;
 
@@ -66,18 +57,15 @@ public class LoginBean implements Serializable {
 	public String checkLogin(){
 		 // ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale)
 		Integer result=0;
-		System.out.println("Prüfe Login");
 		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + email + "' AND u.userpassword='" + pass + "'");
 		try {
 			result =  (Integer) query.getSingleResult();
 			if (result.intValue()>0){
 				user = em.find(User2.class, result.longValue());
 				loggedIn=true;
-				System.out.println("Login Status: " + loggedIn);
-				return "/secured/welcome";
+				return "index";
 			}
 		} catch (NoResultException e) {
-			System.out.println("Nicht eingeloggt");
 			loggedIn=false;
 			user=null;
 			// Message senden!
@@ -85,25 +73,8 @@ public class LoginBean implements Serializable {
 			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(null, facesMsg);
 		}
-		
 		return "login";
 	}
-//	public boolean validCredential(){
-//		 // ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale)
-//		Integer result=0;
-//		System.out.println("Prüfe Login");
-//		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + email + "' AND u.userpassword='" + pass + "'");
-//		try {
-//			result =  (Integer) query.getSingleResult();
-//			if (result.intValue()>0){
-//				user = em.find(User2.class, result.longValue());
-//				return true; 
-//			}
-//		} catch (NoResultException e) {
-//			return false;
-//		}
-//		return false;
-//	}
 	
 /**
  * Zerstört die Session!
@@ -116,8 +87,6 @@ public class LoginBean implements Serializable {
 		return "index";
 	}
 	
-	
-	
 	// Sprache
 	// =======
 
@@ -128,6 +97,9 @@ public class LoginBean implements Serializable {
 		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
+	// Getter / Setter
+	// ===============
+	
 	public boolean isLogged(){
 		return loggedIn;
 	}
