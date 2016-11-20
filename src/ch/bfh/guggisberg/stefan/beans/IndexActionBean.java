@@ -1,6 +1,8 @@
 package ch.bfh.guggisberg.stefan.beans;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -31,9 +33,6 @@ public class IndexActionBean implements Serializable {
 
 	@Inject
 	private Password password;
-
-	@Inject
-	private Password pass;
 
 	// Kommunikation zur DB und Persitierung
 	@PersistenceContext
@@ -70,19 +69,19 @@ public class IndexActionBean implements Serializable {
 		// Alles Persistieren
 		try {
 			ut.begin();
+			Password t = new Password(); //Warum müssen die Atribute mit Set gesetzt werden? em.persist(password); müsste doch auch gehen?
+			t.setDescription(password.getDescription());
+			t.setLogin(password.getLogin());
+			t.setPassword(password.getPassword());
+			t.setUser(user2);
+			user2.addPassword(t);
+			em.merge(user2);
+			em.persist(t);
+			lg.setUser(user2);
 		} catch (NotSupportedException | SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Password t = new Password(); //Warum müssen die Atribute mit Set gesetzt werden? em.persist(password); müsste doch auch gehen?
-		t.setDescription(password.getDescription());
-		t.setLogin(password.getLogin());
-		t.setPassword(password.getPassword());
-		t.setUser(user2);
-		user2.addPassword(t);
-		em.merge(user2);
-		em.persist(t);
-		lg.setUser(user2);
 		try {
 			ut.commit();
 		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
@@ -92,7 +91,7 @@ public class IndexActionBean implements Serializable {
 		}
 
 		// Message senden!
-		showGlobalMessage("Das Password wurde erfolgreich gespeichert", "gespeichert");
+		showGlobalMessage(getText("info.passwordSaved"), "gespeichert");
 		password=null;
 		return "list";
 	}
@@ -125,10 +124,7 @@ public class IndexActionBean implements Serializable {
 		lg.setUser(user2);
 		if (deletedCount>0){
 			// Message senden!
-
-			showGlobalMessage("Das Password wurde erfolgreich gelöscht", "löschen");
-		}else{
-			System.out.println("Löschen nicht möglich. ID: " + p.getId() );
+			showGlobalMessage(getText("info.passwordDeleted"), "löschen");
 		}
 		return "list";
 	}
@@ -156,7 +152,7 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		showGlobalMessage("Die neunen Daten wurden erfolgreich gespeichert!", "saveOK");
+		showGlobalMessage(getText("info.UserDataSaved"), "saveOK");
 		password=null;
 		return "list";
 	}
@@ -178,6 +174,15 @@ public class IndexActionBean implements Serializable {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		fc.addMessage(null, facesMsg);
 	}
+	
+	public String getText(String key) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String messageBundleName = facesContext.getApplication().getMessageBundle();
+		Locale locale = facesContext.getViewRoot().getLocale();
+		ResourceBundle bundle = ResourceBundle.getBundle(messageBundleName, locale);
+		return bundle.getString(key);
+	}
+	
 
 	// ********************************************************************************
 	// User
@@ -227,13 +232,13 @@ public class IndexActionBean implements Serializable {
 				System.out.println("Aus der DB:" + user.getUserPassword());
 				if(!lg.getUser().getUserPassword().equals(oldPassword)){
 					// Passwort stimmt nicht!
-					showGlobalErrorMessage("Password falsch", "error with Password");
+					showGlobalErrorMessage(getText("err.passwordWrong"), "error with Password");
 					return "home";
 				}
 			}
 			else {
 				// In diesem Falle hat ein fremder User bereits diese Email
-				showGlobalErrorMessage("Diese Emailadresse gibt es bereits", "error with EMail");
+				showGlobalErrorMessage(getText("err.emailAlreadyExist"), "error with EMail");
 				return "home";
 			}
 		}
@@ -261,7 +266,7 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		showGlobalMessage("Deine Daten wurden gespeichert!", "Dataok");
+		showGlobalMessage(getText("info.UserDataSaved"), "Dataok");
 		oldPassword=null;
 		newPassword=null;
 		return "home";
@@ -294,16 +299,7 @@ public class IndexActionBean implements Serializable {
 	public static EntityManager getEntityManager(){
 		return em;
 	}
-
-
-	public Password getPass() {
-		return pass;
-	}
-
-	public void setPass(Password pass) {
-		this.pass = pass;
-	}
-
+	
 	public String getNewPassword() {
 		return newPassword;
 	}

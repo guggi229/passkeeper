@@ -2,7 +2,7 @@ package ch.bfh.guggisberg.stefan.beans;
 
 import java.io.Serializable;
 import java.util.Locale;
-
+import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -55,7 +55,6 @@ public class LoginBean implements Serializable {
  * @return redirect
  */
 	public String checkLogin(){
-		 // ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale)
 		Integer result=0;
 		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + email + "' AND u.userpassword='" + pass + "'");
 		try {
@@ -70,7 +69,7 @@ public class LoginBean implements Serializable {
 			user=null;
 			// Message senden!
 			
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User Name oder Password falsch","loginFaild");
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getText("err.loginWrong"),"loginFaild");
 			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(null, facesMsg);
 		}
@@ -98,6 +97,19 @@ public class LoginBean implements Serializable {
 		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
+	/**
+	 * Diese Methode holt die Übersetzung für die Beans.
+	 * @param key
+	 * @return
+	 */
+	public String getText(String key) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String messageBundleName = facesContext.getApplication().getMessageBundle();
+		Locale locale = facesContext.getViewRoot().getLocale();
+		ResourceBundle bundle = ResourceBundle.getBundle(messageBundleName, locale);
+		return bundle.getString(key);
+	}
+	
 	// Getter / Setter
 	// ===============
 	
