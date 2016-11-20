@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
-
+import javax.validation.constraints.NotNull;
 import javax.persistence.Column;
 
 import javax.persistence.Id;

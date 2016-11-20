@@ -34,6 +34,7 @@ import ch.bfh.guggisberg.stefan.model.User2;
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = -3511370201568906431L;
 
+	// Logindaten
 	private String  email;
 	private String pass;
 	private boolean loggedIn;
@@ -58,7 +59,10 @@ public class LoginBean implements Serializable {
 	public void init() {
 		locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
 	}
-
+/** Prüft das Login, wenn der User über Login.xhtml kommt
+ * 
+ * @return redirect
+ */
 	public String checkLogin(){
 		 // ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale)
 		Integer result=0;
@@ -84,14 +88,31 @@ public class LoginBean implements Serializable {
 		
 		return "login";
 	}
-
+//	public boolean validCredential(){
+//		 // ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale)
+//		Integer result=0;
+//		System.out.println("Prüfe Login");
+//		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + email + "' AND u.userpassword='" + pass + "'");
+//		try {
+//			result =  (Integer) query.getSingleResult();
+//			if (result.intValue()>0){
+//				user = em.find(User2.class, result.longValue());
+//				return true; 
+//			}
+//		} catch (NoResultException e) {
+//			return false;
+//		}
+//		return false;
+//	}
+	
+/**
+ * Zerstört die Session!
+ * 
+ * @return
+ */
 	public String doLogout(){
-		// Set the paremeter indicating that user is logged in to false
-		loggedIn = false;
-		// Set logout message
-		//		FacesMessage msg = new FacesMessage("Logout success!", "INFO MSG");
-		//		msg.setSeverity(FacesMessage.SEVERITY_INFO);
-		//		FacesContext.getCurrentInstance().addMessage(null, msg);
+		loggedIn = false;																
+		 FacesContext.getCurrentInstance().getExternalContext().invalidateSession();	// Usersession auf dem Backend löschen
 		return "index";
 	}
 	

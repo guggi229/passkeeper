@@ -24,7 +24,7 @@
 		<ui:include src="../templates/menu_language.xhtml" />
 		<div class="jumbotron">
 			<p>
-				<h:outputText value="#{msg.yourPasswords}" />
+				<h:outputText value="#{msg.editPasswords}" />
 			</p>
 		</div>
 		<div>
@@ -68,8 +68,7 @@
 									image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
 						</tr>
 					</h:form>
-					<ui:repeat var="p"
-						value="#{loginBean.user.passwords}">
+					<ui:repeat var="p" value="#{loginBean.user.passwords}">
 						<h:form id="pass">
 							<tr>
 								<th><h:inputText styleClass="form-control" id="description"
@@ -78,14 +77,14 @@
 										value="#{p.login}" required="true" /></th>
 								<th><h:inputText styleClass="form-control" id="password"
 										value="#{p.password}" required="true" /></th>
+								<h:inputHidden value="#{p.id}" id="id"  />
 								<th><h:commandButton
-										action="#{indexActionBean.savePassword}"
+										action="#{indexActionBean.editPassword(p)}"
 										image="../image/edit.png" alt="#{msg.passwordSave}" /></th>
 								<th><h:commandButton
 										action="#{indexActionBean.deletePassword(p)}"
-										image="../image/del.png" alt="#{msg.passwordDel}" /></th>
-								<h:inputHidden value="#{p.id}" id="id" 
-									 />
+										image="../image/del.png" alt="#{msg.passwordDel}" immediate="true"/></th>
+								
 							</tr>
 						</h:form>
 					</ui:repeat>

@@ -28,18 +28,10 @@ import ch.bfh.guggisberg.stefan.model.User2;
 @Named
 @RequestScoped
 public class IndexActionBean implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4960772482749013848L;
-	private boolean isAdded = false;
 
 	@Inject
-	private User user;	
-
-	@Inject
-	private User2 user2;
+	private User2 user2;			// Version 2 des Users
 
 	@Inject
 	private Password password;
@@ -54,8 +46,13 @@ public class IndexActionBean implements Serializable {
 	@Resource
 	private UserTransaction ut;
 
+	// Divers
+	private String newPassword;
+
+	// ********************************************************************************
 	// Passwort 
 	// =========
+	// ********************************************************************************
 
 
 	// Passwort einfügen
@@ -118,10 +115,7 @@ public class IndexActionBean implements Serializable {
 		}
 
 		// Message senden!
-		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Das Password wurde erfolgreich gespeichert", "gespeichert");
-		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, facesMsg);
-
+		showGlobalMessage("Das Password wurde erfolgreich gespeichert", "gespeichert");
 		password=null;
 		return "list";
 	}
@@ -134,6 +128,8 @@ public class IndexActionBean implements Serializable {
 		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
 		if (lg==null) return "login"; 	
 		Query query = em.createNativeQuery("Delete FROM Passwords WHERE passwordid=" + p.getId());
+		System.out.println("Zu löschendes Passwort: " + p.getId() );
+		user2 = em.find(User2.class, lg.getUser().getId());
 		try {
 			ut.begin();
 		} catch (NotSupportedException | SystemException e) {
@@ -141,6 +137,7 @@ public class IndexActionBean implements Serializable {
 			e.printStackTrace();
 		}
 		int deletedCount = query.executeUpdate();
+
 		try {
 			ut.commit();
 		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
@@ -148,52 +145,119 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		user2 = em.find(User2.class, lg.getUser().getId());
+		lg.setUser(user2);
 		if (deletedCount>0){
 			// Message senden!
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Das Password wurde erfolgreich gelöscht", "löschen");
-			FacesContext fc = FacesContext.getCurrentInstance();
-			fc.addMessage(null, facesMsg);
+			
+			showGlobalMessage("Das Password wurde erfolgreich gelöscht", "löschen");
 		}else{
 			System.out.println("Löschen nicht möglich. ID: " + p.getId() );
 		}
 		return "list";
 	}
-
-
-
-	//Passwort ändern
-	// ----------------
+	public String editPassword(Password p){
+		password = p;
+		return "edit";
+	}
 	public String savePassword(){
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
+		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
+		if (lg==null) return "login"; 
+	
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Query query = em.createNativeQuery("Update bfhschema.passwords SET passworddata = '" + password.getPassword() + "' ,passworddesc = '" + password.getDescription() + "' ,passwordlogin='" +password.getLogin() + "' WHERE passwordid =" + password.getId());
+		int r = query.executeUpdate();
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		showGlobalMessage("Die neunen Daten wurden erfolgreich gespeichert!", "saveOK");
+		password=null;
 		return "list";
 	}
 
+	//	public String savePassword(Password p){
+	//		System.out.println("Daten:" + p.getPassword());
+	//		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
+	//		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
+	//		user2 = em.find(User2.class, lg.getUser().getId());
+	//		Password temp = em.find(Password.class, p.getId());				// Lade altes Passwort
+	//		System.out.println("Password mit ID " + p.getId() + " geladen");
+	//		System.out.println("Neue Daten: ");
+	//		System.out.println(p.getDescription());
+	//		System.out.println(p.getLogin());
+	//		System.out.println(p.getPassword());
+	//		System.out.println(p.getId());
+	//		System.out.println(p.getUser());
+	//		System.out.println("Alte Daten:");
+	//		System.out.println(temp.getDescription());
+	//		System.out.println(temp.getLogin());
+	//		System.out.println(temp.getPassword());
+	//		System.out.println(temp.getId());
+	//		System.out.println(temp.getUser());
+	//		
+	//		temp = p;														// Schreibe neue daten zum Passwort
+	//		try {
+	//			ut.begin();
+	//		} catch (NotSupportedException | SystemException e) {
+	//			// TODO Auto-generated catch block
+	//			e.printStackTrace();
+	//		}
+	//		em.merge(user2);
+	//		em.merge(temp);
+	//		lg.setUser(user2);
+	//		try {
+	//			ut.commit();
+	//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+	//				| HeuristicRollbackException | SystemException e) {
+	//			// TODO Auto-generated catch block
+	//			e.printStackTrace();
+	//		}
+	//
+	//		// Message schreiben
+	//		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Das Password wurde erfolgreich geändert", "change");
+	//		FacesContext fc = FacesContext.getCurrentInstance();
+	//		fc.addMessage(null, facesMsg);
+	//
+	//		return "list";
+	//
+	//	}
 
 
-	// Login
-	// Ist hier im IndexActionBean. Schöner wäre ein CRUD Service. Für unser Projekt reicht es hier!
+	// ********************************************************************************
+	// Messages
+	// ========
+	// ********************************************************************************
 
-	public String checkLogin(){
-		Query query = em.createNativeQuery("Select count(*) from user u WHERE useremail='" + user.getUserEmail()+ "' AND userpassword='"+user.getUserPassword()+"'");
-		BigInteger result = (BigInteger) query.getSingleResult();
-		if (result.intValue()>0){
-			System.out.println("Eingeloggt");
-		}else{
-			System.out.println("Nicht eingeloggt");
-		}
-		return "login";
+	public void showGlobalMessage(String message, String key){
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,message, key);
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, facesMsg);
 	}
 
-
+	// ********************************************************************************
 	// Sprache
 	// =======
-
+	// ********************************************************************************
 
 	public void changeLang(String langCode) {
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale (langCode));
 		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
+	// ********************************************************************************
+	// User
+	// ====
+	// ********************************************************************************
 
 	// addUser
 	// ========
@@ -218,11 +282,45 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
 		return "thanks";
 	}
+	public String updateUser(){
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
+		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
+		if (lg==null) return "login"; 	
+		System.out.println("Neues Password: " + newPassword);
+		// Prüfe, ob User berechtigt ist
+
+		// To do
+
+		// Das Passwort im Formular ist absichtlich nicht gebunden. So wird beim laden des Formulars, das Password nicht angezeigt.
+		lg.getUser().setUserPassword(newPassword);
+
+		// Neue Daten mergen
+		try {
+			ut.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(lg.getUser());
+		lg.setUser(lg.getUser());
+		try {
+			ut.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		showGlobalMessage("Deine Daten wurden gespeichert!", "Dataok");
+		return "home";
+	}
+
+	// ********************************************************************************
+	// Generelle Sachen
+	// =================
+	// ********************************************************************************
+
 	public void checkEmail(FacesContext context, UIComponent component, Object value){
 
 	}
@@ -238,25 +336,10 @@ public class IndexActionBean implements Serializable {
 		return "register";
 	}
 
-	// Allgemeine Getter und Setter
-	// ============================
-
-	public boolean isAdded() {
-		return isAdded;
-	}
-
-	public void setAdded(boolean isAdded) {
-		this.isAdded = isAdded;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User u) {
-		this.user = u;
-	}
+	// ********************************************************************************
+	// Getter / Setter
+	// ===============
+	// ********************************************************************************
 
 
 	public Password getPassword() {
@@ -282,13 +365,19 @@ public class IndexActionBean implements Serializable {
 
 
 	public Password getPass() {
-		System.out.println("********************************************************** Get Pass");
 		return pass;
 	}
 
 	public void setPass(Password pass) {
-		System.out.println("********************************************************** Set Pass");
 		this.pass = pass;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 }

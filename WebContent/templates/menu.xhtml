@@ -10,13 +10,11 @@
 				<li><a href="/SuperPass/index.xhtml"><h:outputText value="#{msg.home}" /></a></li>
 				<c:choose>
 					<c:when test="#{loginBean.logged}">
-						<li><a href="#"><h:outputText />#{loginBean.email}</a></li>
+						<li><a href="/SuperPass/secured/home.xhtml"><h:outputText />#{loginBean.email}</a></li>
 						<li><h:commandLink action="#{loginBean.doLogout}"
 								value="#{msg.logout}" /></li>
 								<li><a href="/SuperPass/secured/list.xhtml"><h:outputText
 									value="#{msg.yourPasswords}" /></a></li>
-									<li><a href="/SuperPass/secured/newPassword.xhtml"><h:outputText
-									value="#{msg.newPasswords}" /></a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="login.xhtml"><h:outputText

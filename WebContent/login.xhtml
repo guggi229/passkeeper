@@ -35,8 +35,6 @@
 <div class="content">
 			<!-- Feldlänge begrenze  -->
 			<h:form>
-
-
 				<div class="form-group">
 					<h:outputLabel value="#{msg.email}" />
 					
@@ -62,7 +60,7 @@
 					<h:commandButton action="#{loginBean.checkLogin}" 
 						value="#{msg.login}" styleClass="btn btn-success button" />
 					<h:commandButton action="index" value="#{msg.cancel}"
-						styleClass="btn btn-danger button" />
+						styleClass="btn btn-danger button" immediate="true"/>
 				</div>
 			</h:form>
 		</div>
