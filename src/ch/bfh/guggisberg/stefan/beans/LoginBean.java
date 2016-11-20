@@ -69,7 +69,8 @@ public class LoginBean implements Serializable {
 			loggedIn=false;
 			user=null;
 			// Message senden!
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,"User Name oder Password falsch","loginFaild");
+			
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User Name oder Password falsch","loginFaild");
 			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(null, facesMsg);
 		}

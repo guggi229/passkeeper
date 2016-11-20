@@ -44,6 +44,7 @@ public class IndexActionBean implements Serializable {
 
 	// Divers
 	private String newPassword;
+	private String oldPassword;
 
 	// ********************************************************************************
 	// Passwort 
@@ -221,27 +222,34 @@ public class IndexActionBean implements Serializable {
 			// Hier wird geprüft, ob die bereits existierende EMail zum User oder zu einer anderen Person gehört.
 			// Hat ein User diese Email schon, wird ein Fehler generiert
 			if (user.getUserEmail().equals(lg.getUser().getUserEmail()) && (user.getId()==lg.getUser().getId())  ){
-
+				
+				System.out.println("Session Password:  " + lg.getUser().getUserPassword());
+				System.out.println("Aus der DB:" + user.getUserPassword());
+				if(!lg.getUser().getUserPassword().equals(oldPassword)){
+					// Passwort stimmt nicht!
+					showGlobalErrorMessage("Password falsch", "error with Password");
+					return "home";
+				}
 			}
 			else {
-				System.out.println("Nicht meine Email!");
 				// In diesem Falle hat ein fremder User bereits diese Email
 				showGlobalErrorMessage("Diese Emailadresse gibt es bereits", "error with EMail");
 				return "home";
 			}
-
 		}
+
 		// Das Passwort im Formular ist absichtlich nicht gebunden. So wird beim laden des Formulars, das Password nicht angezeigt.
 		lg.getUser().setUserPassword(newPassword);
+
+		// Jetzt muss noch geprüft werden, ob das alte Passwort stimmt! --> Security
+
 
 		// Neue Daten mergen
 		try {
 			ut.begin();
 			em.merge(lg.getUser());
 			lg.setUser(lg.getUser());
-
 		} 
-
 		catch (NotSupportedException | SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -253,8 +261,9 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		showGlobalMessage("Deine Daten wurden gespeichert!", "Dataok");
+		oldPassword=null;
+		newPassword=null;
 		return "home";
 	}
 
@@ -301,6 +310,14 @@ public class IndexActionBean implements Serializable {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 
 }
