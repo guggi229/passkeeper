@@ -41,6 +41,7 @@
 						<h:inputText value="#{loginBean.user.userEmail}" id="userEmail"
 							required="true" requiredMessage="#{msg.notNull}"
 							styleClass="form-control">
+							<f:validator validatorId="ch.bfh.guggisberg.stefan.validator.EmailValidator"/>
 						</h:inputText>
 						<h:message for="userEmail" style="color:red" />
 					</div>

@@ -69,7 +69,7 @@ public class IndexActionBean implements Serializable {
 		// Alles Persistieren
 		try {
 			ut.begin();
-			Password t = new Password(); //Warum müssen die Atribute mit Set gesetzt werden? em.persist(password); müsste doch auch gehen?
+			Password t = new Password(); 
 			t.setDescription(password.getDescription());
 			t.setLogin(password.getLogin());
 			t.setPassword(password.getPassword());
@@ -152,6 +152,10 @@ public class IndexActionBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		User2 u = em.find(User2.class, lg.getUser().getId());
+		lg.setUser(u);
+		
+		
 		showGlobalMessage(getText("info.UserDataSaved"), "saveOK");
 		password=null;
 		return "list";

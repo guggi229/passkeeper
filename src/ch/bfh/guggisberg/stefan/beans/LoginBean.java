@@ -50,10 +50,10 @@ public class LoginBean implements Serializable {
 	public void init() {
 		locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
 	}
-/** Prüft das Login, wenn der User über Login.xhtml kommt
- * 
- * @return redirect
- */
+	/** Prüft das Login, wenn der User über Login.xhtml kommt
+	 * 
+	 * @return redirect
+	 */
 	public String checkLogin(){
 		Integer result=0;
 		Query query = em.createNativeQuery("Select userid from user u WHERE u.useremail='" + email + "' AND u.userpassword='" + pass + "'");
@@ -68,32 +68,32 @@ public class LoginBean implements Serializable {
 			loggedIn=false;
 			user=null;
 			// Message senden!
-			
+
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getText("err.loginWrong"),"loginFaild");
 			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(null, facesMsg);
 		}
 		return "login";
 	}
-	
-/**
- * Zerstört die Session!
- * 
- * @return
- */
+
+	/**
+	 * Zerstört die Session!
+	 * 
+	 * @return
+	 */
 	public String doLogout(){
 		loggedIn = false;																
-		 FacesContext.getCurrentInstance().getExternalContext().invalidateSession();	// Usersession auf dem Backend löschen
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();	// Usersession auf dem Backend löschen
 		return "index";
 	}
-	
+
 	// Sprache
 	// =======
 
 
 	public void setLang(String langCode) {
-	       locale = new Locale(langCode);
-	        FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+		locale = new Locale(langCode);
+		FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
 		System.out.println("Eingestellte Location ist: " + FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
@@ -109,10 +109,10 @@ public class LoginBean implements Serializable {
 		ResourceBundle bundle = ResourceBundle.getBundle(messageBundleName, locale);
 		return bundle.getString(key);
 	}
-	
+
 	// Getter / Setter
 	// ===============
-	
+
 	public boolean isLogged(){
 		return loggedIn;
 	}
