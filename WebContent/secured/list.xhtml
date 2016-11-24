@@ -63,7 +63,9 @@
 										value="#{indexActionBean.password.password}" id="password"
 										required="true" requiredMessage="#{msg.notNull}" /> <h:message
 										for="password" style="color:red" /></th>
-								<th></th>
+								<th><h:commandButton
+										action="#{indexActionBean.createPassword}"
+										image="../image/dice.png" alt="#{msg.passwordAdd}" immediate="true"/></th>
 								<th><h:commandButton
 										action="#{indexActionBean.addPassword}"
 										image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
