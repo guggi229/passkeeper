@@ -1,5 +1,6 @@
 package ch.bfh.guggisberg.stefan.beans;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -128,10 +129,27 @@ public class IndexActionBean implements Serializable {
 		}
 		return "list";
 	}
+	// Hilfsmethode Da EL nicht geht
+	// ----------------
 	public String editPassword(Password p){
 		password = p;
 		return "edit";
 	}
+	//Passwort Zufall
+	// ----------------
+
+	public String createPassword(){
+		String allowedChars = "0123456789abcdefghijklmnopqrstuvwABCDEFGHIJKLMNOP!§$%&?*+#";
+		SecureRandom random = new SecureRandom();
+		StringBuilder pass = new StringBuilder(15);
+		for (int i = 0; i < 15; i++) {
+			pass.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
+		}
+		password.setPassword(pass.toString());
+		return "list";
+	}
+	//Passwort speichern
+	// ----------------
 	public String savePassword(){
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false); 
 		LoginBean lg = (LoginBean) session.getAttribute("loginBean");
@@ -154,8 +172,8 @@ public class IndexActionBean implements Serializable {
 		}
 		User2 u = em.find(User2.class, lg.getUser().getId());
 		lg.setUser(u);
-		
-		
+
+
 		showGlobalMessage(getText("info.UserDataSaved"), "saveOK");
 		password=null;
 		return "list";
@@ -178,7 +196,7 @@ public class IndexActionBean implements Serializable {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		fc.addMessage(null, facesMsg);
 	}
-	
+
 	public String getText(String key) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		String messageBundleName = facesContext.getApplication().getMessageBundle();
@@ -186,7 +204,10 @@ public class IndexActionBean implements Serializable {
 		ResourceBundle bundle = ResourceBundle.getBundle(messageBundleName, locale);
 		return bundle.getString(key);
 	}
-	
+
+	//
+
+
 
 	// ********************************************************************************
 	// User
@@ -231,7 +252,7 @@ public class IndexActionBean implements Serializable {
 			// Hier wird geprüft, ob die bereits existierende EMail zum User oder zu einer anderen Person gehört.
 			// Hat ein User diese Email schon, wird ein Fehler generiert
 			if (user.getUserEmail().equals(lg.getUser().getUserEmail()) && (user.getId()==lg.getUser().getId())  ){
-				
+
 				System.out.println("Session Password:  " + lg.getUser().getUserPassword());
 				System.out.println("Aus der DB:" + user.getUserPassword());
 				if(!lg.getUser().getUserPassword().equals(oldPassword)){
@@ -303,7 +324,7 @@ public class IndexActionBean implements Serializable {
 	public static EntityManager getEntityManager(){
 		return em;
 	}
-	
+
 	public String getNewPassword() {
 		return newPassword;
 	}

@@ -2,6 +2,8 @@ package ch.bfh.guggisberg.stefan.validator;
 
 
 import java.math.BigInteger;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,18 +64,28 @@ public class EmailValidator implements Validator {
 		Query q= em.createNativeQuery("SELECT COUNT(*) FROM bfhschema.user where userEmail=:email");
 		q.setParameter("email", value.toString());
 		BigInteger count = (BigInteger) q.getSingleResult();
-		System.out.println("Anzahl Datensätze" + count.intValue());
 		if(count.intValue()>0){
 
 			FacesMessage msg =
 					new FacesMessage("E-mail validation failed.",
-							"Emailadresse exitiert bereits!");
+							getText("err.emailAlreadyExist"));
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}
 
 	}
-
+	// ********************************************************************************
+	// Messages
+	// ========
+	// ********************************************************************************
+	
+	public String getText(String key) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String messageBundleName = facesContext.getApplication().getMessageBundle();
+		Locale locale = facesContext.getViewRoot().getLocale();
+		ResourceBundle bundle = ResourceBundle.getBundle(messageBundleName, locale);
+		return bundle.getString(key);
+	}
 
 
 
