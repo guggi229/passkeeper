@@ -5,6 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:h="http://java.sun.com/jsf/html">
 <f:view locale="#{loginBean.locale}">
 	<f:loadBundle basename="messages" var="msg" />
@@ -32,16 +33,15 @@
 				<ui:include src="/templates/menu.xhtml" />
 			</div>
 			<div>
-			<h:messages infoClass="info" errorClass="error" globalOnly="true" />	
+				<h:messages infoClass="info" errorClass="error" globalOnly="true" />
 			</div>
 			<div class="content">
 				<h:form>
 					<div class="form-group">
 						<label>#{msg.yourEmail}</label>
-						<h:inputText value="#{loginBean.user.userEmail}" id="userEmail"
+						<h:inputText  a:type="email" value="#{loginBean.user.userEmail}" id="userEmail"
 							required="true" requiredMessage="#{msg.notNull}"
 							styleClass="form-control">
-							<f:validator validatorId="ch.bfh.guggisberg.stefan.validator.EmailValidator"/>
 						</h:inputText>
 						<h:message for="userEmail" style="color:red" />
 					</div>
@@ -54,7 +54,8 @@
 					</div>
 					<div class="form-group">
 						<label>#{msg.yourOldPassword}</label>
-						<h:inputSecret id="userPassword" required="true" value="#{indexActionBean.oldPassword}"
+						<h:inputSecret id="userPassword" required="true"
+							value="#{indexActionBean.oldPassword}"
 							requiredMessage="#{msg.notNull}" styleClass="form-control" />
 						<h:message for="userPassword" style="color:red" />
 					</div>

@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="css/superpass.css" />
 	<script src="scripts/jquery-3.1.1.min.js"></script>
 	<script src="scripts/bootstrap.js"></script>
+	<script src="scripts/bcrypt.js"></script>
+	<script src="scripts/superpass.js"></script>
 	<title><h:outputText value="#{msg.title}" /></title>
 
 
@@ -59,8 +61,7 @@
 				<div>
 					<h:commandButton action="#{loginBean.checkLogin}" 
 						value="#{msg.login}" styleClass="btn btn-success button" />
-					<h:commandButton action="index" value="#{msg.cancel}"
-						styleClass="btn btn-danger button" immediate="true"/>
+					
 				</div>
 			</h:form>
 		</div>

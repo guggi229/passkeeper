@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="css/superpass.css" />
 	<script src="scripts/jquery-3.1.1.min.js"></script>
 	<script src="scripts/bootstrap.js"></script>
+	<script src="scripts/superpass.js"></script>
 	<title><h:outputText value="#{msg.title}" /></title>
 </h:head>
 <h:body>
@@ -32,7 +33,7 @@
 			<ui:include src="/templates/menu.xhtml" />
 		</div>
 		<div class="content">
-		<h:form>
+		<h:form id="pwdForm">
 			<div class="form-group">
 				<label>#{msg.yourEmail}</label>
 				<h:inputText value="#{indexActionBean.user2.userEmail}"
@@ -58,9 +59,10 @@
 			</div>
 
 			<div class="row">
+		
 				<div class="col-lg-12"></div>
 				<h:commandButton action="#{indexActionBean.addUser}"
-					value="#{msg.register}" styleClass="btn btn-success" />
+					value="#{msg.register}" styleClass="btn btn-success"  />
 
 			</div>
 		</h:form>
@@ -69,4 +71,5 @@
 
 </h:body>
 </f:view>
+
 </html>
