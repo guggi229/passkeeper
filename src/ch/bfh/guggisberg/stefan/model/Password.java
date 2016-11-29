@@ -1,7 +1,6 @@
 package ch.bfh.guggisberg.stefan.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -10,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.persistence.Column;
 
 import javax.persistence.Id;

@@ -64,12 +64,11 @@
 
 								<th><h:inputText styleClass="form-control"
 										value="#{indexActionBean.password.password}" id="password"
-										required="true" requiredMessage="#{msg.notNull}" 
 										a:maxlength="45"/> <h:message
 										for="password" style="color:red" /></th>
 								<th><h:commandButton
-										action="#{indexActionBean.createPassword}"
-										image="../image/dice.png" alt="#{msg.passwordAdd}" immediate="true"/></th>
+										action="#{indexActionBean.createPassword()}"
+										image="../image/dice.png" alt="#{msg.passwordAdd}" /></th>
 								<th><h:commandButton
 										action="#{indexActionBean.addPassword}"
 										image="../image/add3.png" alt="#{msg.passwordAdd}" /></th>
